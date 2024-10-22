@@ -9,18 +9,22 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class IngredientRoute {
 
-    private final IngredientController ingredientcontroller = new IngredientController();
+    private final IngredientController ingredientController = new IngredientController();
 
     protected EndpointGroup getRoutes()
     {
-
+/*
         return () ->
         {
             get("/findfromingredient/{id}", IngredientController::read);
-
             post("/", IngredientController::create);
             put("/{id}", IngredientController::update);
             delete("/{id}", IngredientController::delete);
         };
+
+ */
+        return null;
     }
+
+
 }
