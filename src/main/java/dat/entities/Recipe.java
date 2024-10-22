@@ -22,6 +22,7 @@ public class Recipe
     @Column(name = "recipe_name", nullable = false, unique = true)
     private String recipeName;
 
+    @Setter
     @ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ingredient> ingredients;
 

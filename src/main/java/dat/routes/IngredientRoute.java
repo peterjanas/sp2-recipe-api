@@ -1,15 +1,11 @@
 package dat.routes;
 
 
-import dat.controllers.impl.Ingredientcontroller;
-import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class IngredientRoute {
 
-    private final Ingredientcontroller ingredientcontroller = new Ingredientcontroller();
+    private final IngredientController ingredientController = new IngredientController();
 
     protected EndpointGroup getRoutes() {
 /*
