@@ -11,14 +11,14 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class IngredientController implements IController<RecipeDTO, Integer>
+public class IngredientController implements IController<IngredientDTO, Integer>
 {
-    private final IngredientDAO ingredientDAO = new IngredientDAO();
+    private final IngredientDAO dao;
 
     public IngredientController()
     {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        this.ingredientDAO = IngredientDAO.getInstance(emf);}
+        this.dao = IngredientDAO.getInstance(emf);}
     @Override
     public void read(Context ctx)
     {
@@ -56,23 +56,33 @@ public class IngredientController implements IController<RecipeDTO, Integer>
     @Override
     public void update(Context ctx)
     {
-
+        // request
+        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        // dto
+        IngredientDTO ingredientDTO = dao.update(id, validateEntity(ctx));
+        // response
+        ctx.res().setStatus(200);
+        ctx.json(ingredientDTO, IngredientDTO.class);
     }
 
     @Override
     public void delete(Context ctx)
     {
-
+        // request
+        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        dao.delete(id);
+        // response
+        ctx.res().setStatus(204);
     }
 
     @Override
     public boolean validatePrimaryKey(Integer integer)
     {
-        return false;
+        return dao.validatePrimaryKey(integer);
     }
 
     @Override
-    public RecipeDTO validateEntity(Context ctx)
+    public IngredientDTO validateEntity(Context ctx)
     {
         return null;
     }
