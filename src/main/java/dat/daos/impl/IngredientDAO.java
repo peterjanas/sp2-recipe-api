@@ -1,5 +1,5 @@
 package dat.daos.impl;
 
-public class IngredientDao
+public class IngredientDAO
 {
 }
