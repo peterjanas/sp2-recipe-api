@@ -2,7 +2,6 @@ package dat.daos.impl;
 
 import dat.daos.IDAO;
 import dat.dtos.IngredientDTO;
-import dat.dtos.RecipeDTO;
 import dat.entities.Ingredient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -60,7 +59,14 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
     @Override
     public IngredientDTO update(Integer integer, IngredientDTO ingredientDTO)
     {
-        return null;
+        try (EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            Ingredient ingredient = em.find(Ingredient.class, integer);
+            ingredient.setIngredientName(ingredientDTO.getIngredientName());
+            em.getTransaction().commit();
+            return new IngredientDTO(ingredient);
+        }
     }
 
     @Override

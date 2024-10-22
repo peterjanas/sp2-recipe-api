@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -20,14 +21,17 @@ public class Recipe
     private int id;
 
     @Column(name = "recipe_name", nullable = false, unique = true)
+    @Setter
     private String recipeName;
 
     @Setter
     @ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ingredient> ingredients;
 
+    @Setter
     private String servings;
 
+    @Setter
     private String instructions;
 
     public Recipe(String recipeName, String servings, String instructions)
@@ -43,10 +47,11 @@ public class Recipe
         this.recipeName = recipeDTO.getRecipeName();
         this.servings = recipeDTO.getServings();
         this.instructions = recipeDTO.getInstructions();
-        /*if (recipeDTO.getIngredients() != null) {
-            recipeDTO.getIngredients().forEach(ingredientDTO -> ingredients.add(new Ingredient(ingredientDTO)));
-        } //skal måske bruges?
-         */
+        if (recipeDTO.getIngredients() != null) {
+            this.ingredients = recipeDTO.getIngredients().stream()
+                    .map(Ingredient::new)
+                    .collect(Collectors.toSet());
+        }
     }
     @Override
     public boolean equals(Object o)

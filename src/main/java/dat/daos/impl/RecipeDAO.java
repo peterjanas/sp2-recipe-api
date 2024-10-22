@@ -59,7 +59,17 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     @Override
     public RecipeDTO update(Integer integer, RecipeDTO recipeDTO)
     {
-        return null;
+        try (EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            Recipe recipe = em.find(Recipe.class, integer);
+            recipe.setRecipeName(recipeDTO.getRecipeName());
+            recipe.setInstructions(recipeDTO.getInstructions());
+            recipe.setServings(recipeDTO.getServings());
+            recipe.setIngredients(recipeDTO.getIngredients());
+            em.getTransaction().commit();
+            return new RecipeDTO(recipe);
+        }
     }
 
     @Override
