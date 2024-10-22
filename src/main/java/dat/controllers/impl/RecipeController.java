@@ -87,16 +87,11 @@ public class RecipeController implements IController<RecipeDTO, Integer>
     }
 
     @Override
-    public RecipeDTO validateEntity(Context ctx)
-    {
-        /*
-        return ctx.bodyValidator(HotelDTO.class)
-                .check(h -> h.getHotelAddress() != null && !h.getHotelAddress().isEmpty(), "Hotel address must be set")
-                .check(h -> h.getHotelName() != null && !h.getHotelName().isEmpty(), "Hotel name must be set")
-                .check(h -> h.getHotelType() != null, "Hotel type must be set")
+    public RecipeDTO validateEntity(Context ctx) {
+        return ctx.bodyValidator(RecipeDTO.class)
+                .check(r -> r.getRecipeName() != null && !r.getRecipeName().isEmpty(), "Recipe name must be set")
+                .check(r -> r.getIngredients() != null && !r.getIngredients().isEmpty(), "Ingredients must be set")
+                .check(r -> r.getInstructions() != null && !r.getInstructions().isEmpty(), "Instructions must be set")
                 .get();
-    */
-        return null;
     }
-
 }
