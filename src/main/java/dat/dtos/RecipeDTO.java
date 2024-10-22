@@ -14,10 +14,28 @@ import java.util.stream.Collectors;
 public class RecipeDTO
 {
     private Integer id;
+    private String recipeName;
+    private String servings;
+    private String instructions;
+    private Set<IngredientDTO> ingredients = new HashSet<>();
+
 
     public RecipeDTO(Recipe recipe)
     {
+        this.id = recipe.getId();
+        this.recipeName = recipe.getRecipeName();
+        this.servings = recipe.getServings();
+        this.instructions = recipe.getInstructions();
+        if (recipe.getIngredients() != null) {
+            recipe.getIngredients().forEach(ingredient -> ingredients.add(new IngredientDTO(ingredient)));
+        }
+    }
 
+    public RecipeDTO(String recipeName, String servings, String instructions)
+    {
+        this.recipeName = recipeName;
+        this.servings = servings;
+        this.instructions = instructions;
     }
 
 
