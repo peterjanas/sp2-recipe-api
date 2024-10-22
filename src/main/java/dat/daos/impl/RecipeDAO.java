@@ -29,8 +29,7 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     {
         try (EntityManager em = emf.createEntityManager()) {
             Recipe recipe = em.find(Recipe.class, integer);
-            return null;
-            //return new RecipeDTO(recipe);
+            return new RecipeDTO(recipe);
         }
     }
 
@@ -39,9 +38,8 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     {
         try (EntityManager em = emf.createEntityManager())
         {
-           // TypedQuery<RecipeDTO> query = em.createQuery("SELECT new dat.dtos.RecipeDTO(h) FROM Recipe h", RecipeDTO.class);
-           // return query.getResultList();
-            return null;
+           TypedQuery<RecipeDTO> query = em.createQuery("SELECT new dat.dtos.RecipeDTO(h) FROM Recipe h", RecipeDTO.class);
+           return query.getResultList();
         }
     }
 
@@ -51,12 +49,11 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
         try (EntityManager em = emf.createEntityManager())
         {
             em.getTransaction().begin();
-            //Recipe recipe = new Recipe(RecipeDTO);
-            //em.persist(recipe);
+            Recipe recipe = new Recipe(recipeDTO);
+            em.persist(recipe);
             em.getTransaction().commit();
-            //return new RecipeDTO(recipe);
+            return new RecipeDTO(recipe);
         }
-        return null;
     }
 
     @Override
