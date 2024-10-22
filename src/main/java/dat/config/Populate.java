@@ -1,6 +1,6 @@
 package dat.config;
 
-import dat.entities.Ingredients;
+import dat.entities.Ingredient;
 import dat.entities.Recipe;
 import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
@@ -58,111 +58,111 @@ public class Populate {
     }
 
     @NotNull
-    private static Set<Ingredients> getPastaCarbonaraIngredients() {
-        Ingredients ingredients1 = new Ingredients("Pasta", "400g");
-        Ingredients ingredients2 = new Ingredients("Bacon", "200g");
-        Ingredients ingredients3 = new Ingredients("Egg", "2");
-        Ingredients ingredients4 = new Ingredients("Parmesan", "100g");
+    private static Set<Ingredient> getPastaCarbonaraIngredients() {
+        Ingredient ingredient1 = new Ingredient("Pasta", "400g");
+        Ingredient ingredient2 = new Ingredient("Bacon", "200g");
+        Ingredient ingredient3 = new Ingredient("Egg", "2");
+        Ingredient ingredient4 = new Ingredient("Parmesan", "100g");
 
-        return Set.of(ingredients1, ingredients2, ingredients3, ingredients4);
+        return Set.of(ingredient1, ingredient2, ingredient3, ingredient4);
     }
 
     @NotNull
-    private static Set<Ingredients> getChickenCurryIngredients() {
+    private static Set<Ingredient> getChickenCurryIngredients() {
         return Set.of(
-                new Ingredients("Chicken", "500g"),
-                new Ingredients("Curry Paste", "3 tbsp"),
-                new Ingredients("Coconut Milk", "400ml"),
-                new Ingredients("Onion", "1"),
-                new Ingredients("Garlic", "2 cloves")
+                new Ingredient("Chicken", "500g"),
+                new Ingredient("Curry Paste", "3 tbsp"),
+                new Ingredient("Coconut Milk", "400ml"),
+                new Ingredient("Onion", "1"),
+                new Ingredient("Garlic", "2 cloves")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getBeefStroganoffIngredients() {
+    private static Set<Ingredient> getBeefStroganoffIngredients() {
         return Set.of(
-                new Ingredients("Beef", "500g"),
-                new Ingredients("Sour Cream", "200g"),
-                new Ingredients("Mushrooms", "200g"),
-                new Ingredients("Onion", "1"),
-                new Ingredients("Butter", "2 tbsp")
+                new Ingredient("Beef", "500g"),
+                new Ingredient("Sour Cream", "200g"),
+                new Ingredient("Mushrooms", "200g"),
+                new Ingredient("Onion", "1"),
+                new Ingredient("Butter", "2 tbsp")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getVegetableStirFryIngredients() {
+    private static Set<Ingredient> getVegetableStirFryIngredients() {
         return Set.of(
-                new Ingredients("Carrots", "2"),
-                new Ingredients("Bell Pepper", "1"),
-                new Ingredients("Broccoli", "200g"),
-                new Ingredients("Soy Sauce", "3 tbsp"),
-                new Ingredients("Garlic", "2 cloves")
+                new Ingredient("Carrots", "2"),
+                new Ingredient("Bell Pepper", "1"),
+                new Ingredient("Broccoli", "200g"),
+                new Ingredient("Soy Sauce", "3 tbsp"),
+                new Ingredient("Garlic", "2 cloves")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getMargheritaPizzaIngredients() {
+    private static Set<Ingredient> getMargheritaPizzaIngredients() {
         return Set.of(
-                new Ingredients("Pizza Dough", "1"),
-                new Ingredients("Tomato Sauce", "200g"),
-                new Ingredients("Mozzarella", "200g"),
-                new Ingredients("Basil Leaves", "10"),
-                new Ingredients("Olive Oil", "2 tbsp")
+                new Ingredient("Pizza Dough", "1"),
+                new Ingredient("Tomato Sauce", "200g"),
+                new Ingredient("Mozzarella", "200g"),
+                new Ingredient("Basil Leaves", "10"),
+                new Ingredient("Olive Oil", "2 tbsp")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getShrimpTacosIngredients() {
+    private static Set<Ingredient> getShrimpTacosIngredients() {
         return Set.of(
-                new Ingredients("Shrimp", "300g"),
-                new Ingredients("Taco Shells", "6"),
-                new Ingredients("Cabbage", "100g"),
-                new Ingredients("Avocado", "1"),
-                new Ingredients("Lime", "1")
+                new Ingredient("Shrimp", "300g"),
+                new Ingredient("Taco Shells", "6"),
+                new Ingredient("Cabbage", "100g"),
+                new Ingredient("Avocado", "1"),
+                new Ingredient("Lime", "1")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getFrenchOmeletteIngredients() {
+    private static Set<Ingredient> getFrenchOmeletteIngredients() {
         return Set.of(
-                new Ingredients("Eggs", "3"),
-                new Ingredients("Butter", "1 tbsp"),
-                new Ingredients("Chives", "1 tbsp"),
-                new Ingredients("Salt", "to taste"),
-                new Ingredients("Pepper", "to taste")
+                new Ingredient("Eggs", "3"),
+                new Ingredient("Butter", "1 tbsp"),
+                new Ingredient("Chives", "1 tbsp"),
+                new Ingredient("Salt", "to taste"),
+                new Ingredient("Pepper", "to taste")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getLasagnaIngredients() {
+    private static Set<Ingredient> getLasagnaIngredients() {
         return Set.of(
-                new Ingredients("Lasagna Noodles", "12"),
-                new Ingredients("Ground Beef", "500g"),
-                new Ingredients("Tomato Sauce", "400g"),
-                new Ingredients("Ricotta", "250g"),
-                new Ingredients("Mozzarella", "200g")
+                new Ingredient("Lasagna Noodles", "12"),
+                new Ingredient("Ground Beef", "500g"),
+                new Ingredient("Tomato Sauce", "400g"),
+                new Ingredient("Ricotta", "250g"),
+                new Ingredient("Mozzarella", "200g")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getCapreseSaladIngredients() {
+    private static Set<Ingredient> getCapreseSaladIngredients() {
         return Set.of(
-                new Ingredients("Tomatoes", "2"),
-                new Ingredients("Mozzarella", "200g"),
-                new Ingredients("Basil Leaves", "10"),
-                new Ingredients("Olive Oil", "2 tbsp"),
-                new Ingredients("Salt", "to taste")
+                new Ingredient("Tomatoes", "2"),
+                new Ingredient("Mozzarella", "200g"),
+                new Ingredient("Basil Leaves", "10"),
+                new Ingredient("Olive Oil", "2 tbsp"),
+                new Ingredient("Salt", "to taste")
         );
     }
 
     @NotNull
-    private static Set<Ingredients> getBeefBurgersIngredients() {
+    private static Set<Ingredient> getBeefBurgersIngredients() {
         return Set.of(
-                new Ingredients("Ground Beef", "500g"),
-                new Ingredients("Burger Buns", "4"),
-                new Ingredients("Cheese Slices", "4"),
-                new Ingredients("Lettuce", "4 leaves"),
-                new Ingredients("Tomato", "1")
+                new Ingredient("Ground Beef", "500g"),
+                new Ingredient("Burger Buns", "4"),
+                new Ingredient("Cheese Slices", "4"),
+                new Ingredient("Lettuce", "4 leaves"),
+                new Ingredient("Tomato", "1")
         );
     }
 }
