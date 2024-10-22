@@ -17,7 +17,5 @@ public class Main {
         //Populate.main(args);
         ApplicationConfig.startServer(7070);
     }
-//f
-    //adad
-    //test
+
 }
