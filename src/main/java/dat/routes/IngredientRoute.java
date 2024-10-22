@@ -1,24 +1,26 @@
 package dat.routes;
 
 
+import dat.controllers.impl.IngredientController;
+import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
+
+import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class IngredientRoute {
 
-    private final IngredientController ingredientController = new IngredientController();
+    private final IngredientController ingredientcontroller = new IngredientController();
 
-    protected EndpointGroup getRoutes() {
-/*
-        return () -> {
-            post("/", hotelController::create, Role.USER);
-            get("/", hotelController::readAll);
-            get("/{id}", hotelController::read);
-            put("/{id}", hotelController::update);
-            delete("/{id}", hotelController::delete);
+    protected EndpointGroup getRoutes()
+    {
 
+        return () ->
+        {
+            get("/findfromingredient/{id}", IngredientController::read);
 
+            post("/", IngredientController::create);
+            put("/{id}", IngredientController::update);
+            delete("/{id}", IngredientController::delete);
         };
-    */
-            return null;
     }
 }
