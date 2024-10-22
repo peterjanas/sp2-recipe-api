@@ -1,6 +1,7 @@
 package dat.config;
 
 
+import dat.entities.Ingredients;
 import dat.entities.Recipe;
 import dat.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
@@ -42,6 +43,7 @@ public class HibernateConfig {
     // TODO: IMPORTANT: Add Entity classes here for them to be registered with Hibernate
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(Recipe.class);
+        configuration.addAnnotatedClass(Ingredients.class);
 
     }
 
