@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,7 +18,7 @@ public class Recipe
     private int id;
     private String name;
     @ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Ingredients> ingredients;
+    private Set<Ingredient> ingredients;
     private String servings;
 
     private String instructions;

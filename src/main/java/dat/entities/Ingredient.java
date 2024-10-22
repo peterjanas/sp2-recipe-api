@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-public class Ingredients
+public class Ingredient
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Ingredients
     )
     private Set<Recipe> recipes;
 
-    public Ingredients(String name, String amount)
+    public Ingredient(String name, String amount)
     {
         this.name = name;
         this.amount = amount;
