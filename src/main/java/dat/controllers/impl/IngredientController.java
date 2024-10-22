@@ -9,6 +9,8 @@ import dat.dtos.RecipeDTO;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.util.List;
+
 public class IngredientController implements IController<RecipeDTO, Integer>
 {
     private final IngredientDAO ingredientDAO = new IngredientDAO();
@@ -32,13 +34,23 @@ public class IngredientController implements IController<RecipeDTO, Integer>
     @Override
     public void readAll(Context ctx)
     {
-
+        // List of DTOS
+        List<IngredientDTO> ingredientDTOS = dao.readAll();
+        // response
+        ctx.res().setStatus(200);
+        ctx.json(ingredientDTOS, RecipeDTO.class);
     }
 
     @Override
     public void create(Context ctx)
     {
-
+        // request
+        IngredientDTO jsonRequest = ctx.bodyAsClass(IngredientDTO.class);
+        // DTO
+        IngredientDTO ingredientDTO = dao.create(jsonRequest);
+        // response
+        ctx.res().setStatus(201);
+        ctx.json(ingredientDTO, IngredientDTO.class);
     }
 
     @Override
