@@ -42,9 +42,10 @@ public class Recipe
         this.recipeName = recipeDTO.getRecipeName();
         this.servings = recipeDTO.getServings();
         this.instructions = recipeDTO.getInstructions();
-        if (recipeDTO.getIngredients() != null) {
+        /*if (recipeDTO.getIngredients() != null) {
             recipeDTO.getIngredients().forEach(ingredientDTO -> ingredients.add(new Ingredient(ingredientDTO)));
-        }
+        } //skal måske bruges?
+         */
     }
     @Override
     public boolean equals(Object o)
