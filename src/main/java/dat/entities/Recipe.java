@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,8 +18,8 @@ public class Recipe
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Ingredient> ingredients = new HashSet<>();
+    @OneToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Ingredients> ingredients;
     private String servings;
 
     private String instructions;
