@@ -1,19 +1,13 @@
+### find alle opskrifter
 GET {{url}}/recipes
-
-###
-
+### Find opskrifter med id som er 1
 GET {{url}}/recipes/1
-
-###
-
+### Find opskrifter med rice
 GET {{url}}/recipes/name/Rice
-
-###
-
+### Find opskrifter med 4 portioner
 GET {{url}}/recipes/servings/4 servings
 
-###
-
+### Lav en ny opskrift med pasta
 POST {{url}}/recipes
 Content-Type: application/json
 
@@ -43,8 +37,7 @@ Content-Type: application/json
   ]
 }
 
-###
-
+### Ændr chicken and rice til noodles
 PUT {{url}}/recipes/1
 Content-Type: application/json
 
@@ -78,7 +71,18 @@ Content-Type: application/json
 }
 
 ###
-
 DELETE {{url}}/recipes/1
 
+### Opskrifter med rice som ingrediens
+GET {{url}}/ingredients/findrecipefromingredient/2
 
+### Lav en ny ingrediens
+POST {{url}}/ingredients
+Content-Type: application/json
+
+### Ændr garlic til noget andet
+PUT {{url}}/ingredients/4
+Content-Type: application/json
+
+### Slet chicken
+DELETE {{url}}/ingredients/1
