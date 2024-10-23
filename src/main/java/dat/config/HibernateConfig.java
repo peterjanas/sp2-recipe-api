@@ -4,6 +4,8 @@ package dat.config;
 import dat.entities.Ingredient;
 import dat.entities.Recipe;
 import dat.entities.RecipeIngredient;
+import dat.security.entities.Role;
+import dat.security.entities.User;
 import dat.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
@@ -46,7 +48,8 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(Recipe.class);
         configuration.addAnnotatedClass(Ingredient.class);
         configuration.addAnnotatedClass(RecipeIngredient.class);
-
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Role.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
