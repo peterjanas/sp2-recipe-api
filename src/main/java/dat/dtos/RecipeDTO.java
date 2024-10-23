@@ -17,17 +17,16 @@ public class RecipeDTO
     private String recipeName;
     private String servings;
     private String instructions;
-    private Set<IngredientDTO> ingredients = new HashSet<>();
+    private Set<RecipeIngredientDTO> recipeIngredients = new HashSet<>();
 
 
-    public RecipeDTO(Recipe recipe)
-    {
+    public RecipeDTO(Recipe recipe) {
         this.id = recipe.getId();
         this.recipeName = recipe.getRecipeName();
         this.servings = recipe.getServings();
         this.instructions = recipe.getInstructions();
-        if (recipe.getIngredients() != null) {
-            recipe.getIngredients().forEach(ingredient -> ingredients.add(new IngredientDTO(ingredient)));
+        if (recipe.getRecipeIngredients() != null) {
+            recipe.getRecipeIngredients().forEach(ri -> recipeIngredients.add(new RecipeIngredientDTO(ri)));
         }
     }
 
@@ -52,7 +51,6 @@ public class RecipeDTO
 
         return getId().equals(recipeDTO.getId());
     }
-
 
     @Override
     public int hashCode()
