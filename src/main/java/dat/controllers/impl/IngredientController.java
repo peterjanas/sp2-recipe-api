@@ -18,7 +18,9 @@ public class IngredientController implements IController<IngredientDTO, Integer>
     public IngredientController()
     {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        this.dao = IngredientDAO.getInstance(emf);}
+        this.dao = IngredientDAO.getInstance(emf);
+    }
+
     @Override
     public void read(Context ctx)
     {
@@ -84,7 +86,11 @@ public class IngredientController implements IController<IngredientDTO, Integer>
     @Override
     public IngredientDTO validateEntity(Context ctx)
     {
-        return null;
+        return ctx.bodyValidator(IngredientDTO.class)
+                .check(i -> i.getIngredientName() != null && !i.getIngredientName().isEmpty(), "Ingredient name must be set")
+                .check(i -> i.getAmount() != null && !i.getAmount().isEmpty(), "Amount must be set")
+                .get();
     }
+
 }
 

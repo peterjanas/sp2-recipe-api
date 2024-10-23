@@ -90,7 +90,7 @@ public class RecipeController implements IController<RecipeDTO, Integer>
     public RecipeDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(RecipeDTO.class)
                 .check(r -> r.getRecipeName() != null && !r.getRecipeName().isEmpty(), "Recipe name must be set")
-                .check(r -> r.getIngredients() != null && !r.getIngredients().isEmpty(), "Ingredients must be set")
+                .check(r -> r.getServings() != null && !r.getServings().isEmpty(), "Servings must be set")
                 .check(r -> r.getInstructions() != null && !r.getInstructions().isEmpty(), "Instructions must be set")
                 .get();
     }
