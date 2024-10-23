@@ -3,17 +3,27 @@ package dat.config;
 import dat.entities.Ingredient;
 import dat.entities.Recipe;
 import dat.entities.RecipeIngredient;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class Populate {
-    public static void main(String[] args) {
+public class Populate
+{
 
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+    private EntityManagerFactory emf;
 
-        try (var em = emf.createEntityManager()) {
+    public Populate(EntityManagerFactory emf)
+    {
+        this.emf = emf;
+    }
+
+
+    public void populateData()
+    {
+        try (var em = emf.createEntityManager())
+        {
             em.getTransaction().begin();
 
             // Persist Ingredients first
@@ -47,7 +57,8 @@ public class Populate {
     }
 
     @NotNull
-    private static Set<RecipeIngredient> getChickenRiceIngredients(Recipe recipe, Ingredient chicken, Ingredient rice, Ingredient onion) {
+    private static Set<RecipeIngredient> getChickenRiceIngredients(Recipe recipe, Ingredient chicken, Ingredient rice, Ingredient onion)
+    {
         // Create RecipeIngredients for Chicken and Rice Recipe
         RecipeIngredient chickenIngredient = new RecipeIngredient(recipe, chicken, "200g");
         RecipeIngredient riceIngredient = new RecipeIngredient(recipe, rice, "150g");
@@ -57,11 +68,31 @@ public class Populate {
     }
 
     @NotNull
-    private static Set<RecipeIngredient> getGarlicChickenIngredients(Recipe recipe, Ingredient chicken, Ingredient garlic) {
+    private static Set<RecipeIngredient> getGarlicChickenIngredients(Recipe recipe, Ingredient chicken, Ingredient garlic)
+    {
         // Create RecipeIngredients for Garlic Chicken Recipe
         RecipeIngredient chickenIngredient = new RecipeIngredient(recipe, chicken, "300g");
         RecipeIngredient garlicIngredient = new RecipeIngredient(recipe, garlic, "3 cloves");
 
         return Set.of(chickenIngredient, garlicIngredient);
+    }
+
+    public void cleanupData()
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+
+            // Remove all RecipeIngredient entities
+            em.createQuery("DELETE FROM RecipeIngredient").executeUpdate();
+
+            // Remove all Recipe entities
+            em.createQuery("DELETE FROM Recipe").executeUpdate();
+
+            // Remove all Ingredient entities
+            em.createQuery("DELETE FROM Ingredient").executeUpdate();
+
+            em.getTransaction().commit();
+        }
     }
 }
