@@ -2,13 +2,17 @@ package dat.daos.impl;
 
 import dat.daos.IDAO;
 import dat.dtos.RecipeDTO;
+import dat.entities.Ingredient;
 import dat.entities.Recipe;
+import dat.entities.RecipeIngredient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class RecipeDAO implements IDAO<RecipeDTO, Integer>
@@ -46,27 +50,54 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     @Override
     public RecipeDTO create(RecipeDTO recipeDTO)
     {
-        try (EntityManager em = emf.createEntityManager())
-        {
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
+
+            // Convert RecipeDTO to Recipe entity
             Recipe recipe = new Recipe(recipeDTO);
+
+            // Persist recipe entity
             em.persist(recipe);
+
+            // Persist associated RecipeIngredients
+            Set<RecipeIngredient> recipeIngredients = recipeDTO.getRecipeIngredients().stream()
+                    .map(dto -> new RecipeIngredient(
+                            recipe,
+                            em.find(Ingredient.class, dto.getIngredient().getId()), // Fetch existing ingredient by id
+                            dto.getAmount()))
+                    .collect(Collectors.toSet());
+
+            recipe.setIngredients(recipeIngredients);
+
             em.getTransaction().commit();
             return new RecipeDTO(recipe);
         }
     }
 
     @Override
-    public RecipeDTO update(Integer integer, RecipeDTO recipeDTO)
+    public RecipeDTO update(Integer id, RecipeDTO recipeDTO)
     {
-        try (EntityManager em = emf.createEntityManager())
-        {
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Recipe recipe = em.find(Recipe.class, integer);
+            Recipe recipe = em.find(Recipe.class, id);
+
+            // Update basic recipe fields
             recipe.setRecipeName(recipeDTO.getRecipeName());
             recipe.setInstructions(recipeDTO.getInstructions());
             recipe.setServings(recipeDTO.getServings());
-            recipe.setIngredients(recipeDTO.getIngredients());
+
+            // Update RecipeIngredients
+            Set<RecipeIngredient> newRecipeIngredients = recipeDTO.getRecipeIngredients().stream()
+                    .map(dto -> new RecipeIngredient(
+                            recipe,
+                            em.find(Ingredient.class, dto.getIngredient().getId()), // Fetch existing ingredient by id
+                            dto.getAmount()))
+                    .collect(Collectors.toSet());
+
+            // Clear the old recipe ingredients and set the new ones
+            recipe.getRecipeIngredients().clear();
+            recipe.setIngredients(newRecipeIngredients);
+
             em.getTransaction().commit();
             return new RecipeDTO(recipe);
         }
