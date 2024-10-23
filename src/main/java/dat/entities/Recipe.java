@@ -25,9 +25,8 @@ public class Recipe
     @Setter
     private String recipeName;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
-
 
     @Setter
     private String servings;
@@ -41,6 +40,7 @@ public class Recipe
         this.servings = servings;
         this.instructions = instructions;
     }
+
     public Recipe(RecipeDTO recipeDTO)
     {
         this.recipeName = recipeDTO.getRecipeName();
@@ -48,16 +48,10 @@ public class Recipe
         this.instructions = recipeDTO.getInstructions();
     }
 
-    public void setIngredients(Set<RecipeIngredient> recipeIngredients) {
+    public void setIngredients(Set<RecipeIngredient> recipeIngredients)
+    {
         this.recipeIngredients = recipeIngredients;
     }
-
-    /*public void setIngredients(Set<IngredientDTO> ingredientDTOs)
-    {
-        this.ingredients = ingredientDTOs.stream()
-                .map(Ingredient::new)
-                .collect(Collectors.toSet());
-    }*/
 
     @Override
     public boolean equals(Object o)
@@ -70,7 +64,8 @@ public class Recipe
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(recipeName);
     }
 
