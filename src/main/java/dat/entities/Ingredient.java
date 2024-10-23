@@ -24,31 +24,22 @@ public class Ingredient
     private int id;
 
     @Column(name = "ingredient_name", nullable = false, unique = true)
-    private String IngredientName;
+    private String ingredientName;
 
-    @Column(name = "ingredient_amount", nullable = false)
-    private String amount;
-
-    @ManyToMany
-    @JoinTable(
-        name = "recipe_ingredients",
-        joinColumns = @JoinColumn(name = "ingredient_id"),
-        inverseJoinColumns = @JoinColumn(name = "recipe_id")
-    )
-    private Set<Recipe> recipes;
+    // New relationship to RecipeIngredient
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<RecipeIngredient> recipeIngredients;
 
 
-    public Ingredient(String IngredientName, String amount)
-    {
-        this.IngredientName = IngredientName;
-        this.amount = amount;
+
+    public Ingredient(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
     public Ingredient(IngredientDTO ingredientDTO)
     {
         this.id = ingredientDTO.getId();
-        this.IngredientName = ingredientDTO.getIngredientName();
-        this.amount = ingredientDTO.getAmount();
+        this.ingredientName = ingredientDTO.getIngredientName();
     }
 
   @Override
@@ -57,12 +48,12 @@ public class Ingredient
     if (o == null || getClass() != o.getClass()) return false;
 
     Ingredient ingredient = (Ingredient) o;
-    return Objects.equals(IngredientName, ingredient.IngredientName);
+    return Objects.equals(ingredientName, ingredient.ingredientName);
   }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(IngredientName);
+        return Objects.hash(ingredientName);
     }
 }
