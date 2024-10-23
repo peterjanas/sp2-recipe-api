@@ -25,8 +25,11 @@ public class Recipe
     @Setter
     private String recipeName;
 
-    @ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Ingredient> ingredients;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<RecipeIngredient> recipeIngredients;
+
+    /*@ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Ingredient> ingredients;*/
 
     @Setter
     private String servings;
@@ -40,26 +43,25 @@ public class Recipe
         this.servings = servings;
         this.instructions = instructions;
     }
-
-    public void setIngredients(Set<IngredientDTO> ingredientDTOs)
-    {
-        this.ingredients = ingredientDTOs.stream()
-                .map(Ingredient::new)
-                .collect(Collectors.toSet());
-    }
-
     public Recipe(RecipeDTO recipeDTO)
     {
         this.id = recipeDTO.getId();
         this.recipeName = recipeDTO.getRecipeName();
         this.servings = recipeDTO.getServings();
         this.instructions = recipeDTO.getInstructions();
-        if (recipeDTO.getIngredients() != null) {
-            this.ingredients = recipeDTO.getIngredients().stream()
-                    .map(Ingredient::new)
-                    .collect(Collectors.toSet());
-        }
     }
+
+    public void setIngredients(Set<RecipeIngredient> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
+    }
+
+    /*public void setIngredients(Set<IngredientDTO> ingredientDTOs)
+    {
+        this.ingredients = ingredientDTOs.stream()
+                .map(Ingredient::new)
+                .collect(Collectors.toSet());
+    }*/
+
     @Override
     public boolean equals(Object o)
     {
@@ -68,6 +70,11 @@ public class Recipe
 
         Recipe recipe = (Recipe) o;
         return Objects.equals(recipeName, recipe.recipeName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(recipeName);
     }
 
 
