@@ -11,9 +11,9 @@ class RecipeDAOTest
 {
     private static RecipeDAO recipeDAO;
     private static EntityManagerFactory emf;
-    private static Populator populator;
-    private static RecipeDTO r1, r2;
-    private static List<RecipeDTO> recipes;
+    //private static Populator populator;
+    //private static RecipeDTO r1, r2;
+    //private static List<RecipeDTO> recipes;
 
 
     @BeforeEach
