@@ -3,8 +3,7 @@ package dat.routes;
 
 import dat.controllers.impl.IngredientController;
 import io.javalin.apibuilder.EndpointGroup;
-
-import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class IngredientRoute {
 
@@ -12,18 +11,12 @@ public class IngredientRoute {
 
     protected EndpointGroup getRoutes()
     {
-/*
         return () ->
         {
-            get("/findfromingredient/{id}", IngredientController::read);
-            post("/", IngredientController::create);
-            put("/{id}", IngredientController::update);
-            delete("/{id}", IngredientController::delete);
+            get("/findrecipefromingredient/{id}", ingredientController::getRecipesByIngredientName);
+            post("/", ingredientController::create);
+            put("/{id}", ingredientController::update);
+            delete("/{id}", ingredientController::delete);
         };
-
- */
-        return null;
     }
-
-
 }

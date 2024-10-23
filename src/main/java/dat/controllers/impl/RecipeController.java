@@ -43,6 +43,26 @@ public class RecipeController implements IController<RecipeDTO, Integer>
 
     }
 
+    public void readByName(Context ctx) {
+        // request
+        String name = ctx.pathParam("name");
+        // List of DTOS
+        List<RecipeDTO> recipeDTOS = dao.readByName(name);
+        // response
+        ctx.res().setStatus(200);
+        ctx.json(recipeDTOS, RecipeDTO.class);
+    }
+
+    public void readByServings(Context ctx) {
+        // request
+        String servings = ctx.pathParam("servings");
+        // List of DTOS
+        List<RecipeDTO> recipeDTOS = dao.readByServings(servings);
+        // response
+        ctx.res().setStatus(200);
+        ctx.json(recipeDTOS, RecipeDTO.class);
+    }
+
     @Override
     public void create(Context ctx)
     {

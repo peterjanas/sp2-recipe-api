@@ -43,6 +43,17 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
         }
     }
 
+    public List<IngredientDTO> getRecipesByIngredientName(String ingredientName) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<IngredientDTO> query = em.createQuery("SELECT new dat.dtos.IngredientDTO(i) FROM Ingredient i WHERE i.ingredientName = :ingredientName", IngredientDTO.class);
+            query.setParameter("ingredientName", ingredientName);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public IngredientDTO create(IngredientDTO ingredientDTO)
     {
