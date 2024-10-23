@@ -27,9 +27,8 @@ public class RecipeIngredientDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecipeIngredientDTO that = (RecipeIngredientDTO) o;
-        return id.equals(that.id) &&
-                ingredient.equals(that.ingredient) &&
-                amount.equals(that.amount);
+        return ingredient.equals(that.ingredient) &&
+                amount.equals(that.amount);  // Compare based on ingredient and amount
     }
 
     @Override

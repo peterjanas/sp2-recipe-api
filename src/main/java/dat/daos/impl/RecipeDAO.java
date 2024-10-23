@@ -74,11 +74,7 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-
-            // Convert RecipeDTO to Recipe entity
             Recipe recipe = new Recipe(recipeDTO);
-
-            // Persist recipe entity
             em.persist(recipe);
 
             // Persist associated RecipeIngredients
@@ -97,11 +93,11 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     }
 
     @Override
-    public RecipeDTO update(Integer id, RecipeDTO recipeDTO)
+    public RecipeDTO update(Integer integer, RecipeDTO recipeDTO)
     {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Recipe recipe = em.find(Recipe.class, id);
+            Recipe recipe = em.find(Recipe.class, integer);
 
             // Update basic recipe fields
             recipe.setRecipeName(recipeDTO.getRecipeName());

@@ -28,8 +28,6 @@ public class Recipe
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
 
-    /*@ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Ingredient> ingredients;*/
 
     @Setter
     private String servings;
@@ -45,7 +43,6 @@ public class Recipe
     }
     public Recipe(RecipeDTO recipeDTO)
     {
-        this.id = recipeDTO.getId();
         this.recipeName = recipeDTO.getRecipeName();
         this.servings = recipeDTO.getServings();
         this.instructions = recipeDTO.getInstructions();
