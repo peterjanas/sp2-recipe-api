@@ -1,0 +1,43 @@
+GET {{url}}/recipes
+
+###
+
+GET {{url}}/recipes/1
+
+###
+
+GET {{url}}/recipes/name/Pasta
+
+###
+
+Get {{url}}/recipes/servings/4
+
+###
+
+POST {{url}}/recipes
+Content-Type: application/json
+
+{
+  "recipeName": "Pasta",
+  "recipeIngredients": "Pasta, Tomato Sauce, Cheese",
+  "instructions": "Boil Pasta, Add Tomato Sauce, Add Cheese",
+  "servings": 3
+}
+
+###
+
+PUT {{url}}/recipes/1
+Content-Type: application/json
+
+{
+  "recipeName": "Noodles",
+    "recipeIngredients": "Noodles, Soy Sauce, Vegetables",
+    "instructions": "Boil Noodles, Add Soy Sauce, Add Vegetables",
+    "servings": 2
+}
+
+###
+
+DELETE {{url}}/recipes/1
+
+
