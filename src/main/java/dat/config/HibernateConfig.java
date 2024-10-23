@@ -3,6 +3,7 @@ package dat.config;
 
 import dat.entities.Ingredient;
 import dat.entities.Recipe;
+import dat.entities.RecipeIngredient;
 import dat.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
@@ -44,6 +45,7 @@ public class HibernateConfig {
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(Recipe.class);
         configuration.addAnnotatedClass(Ingredient.class);
+        configuration.addAnnotatedClass(RecipeIngredient.class);
 
     }
 

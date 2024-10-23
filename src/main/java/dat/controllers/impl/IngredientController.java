@@ -97,7 +97,6 @@ public class IngredientController implements IController<IngredientDTO, Integer>
     {
         return ctx.bodyValidator(IngredientDTO.class)
                 .check(i -> i.getIngredientName() != null && !i.getIngredientName().isEmpty(), "Ingredient name must be set")
-                .check(i -> i.getAmount() != null && !i.getAmount().isEmpty(), "Amount must be set")
                 .get();
     }
 
