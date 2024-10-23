@@ -34,7 +34,7 @@ public class RecipeIngredientDTO {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = (id != null ? id.hashCode() : 0);
         result = 31 * result + ingredient.hashCode();
         result = 31 * result + amount.hashCode();
         return result;

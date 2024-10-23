@@ -126,17 +126,22 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     }
 
     @Override
-    public void delete(Integer integer)
-    {
+    public void delete(Integer integer) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Recipe recipe = em.find(Recipe.class, integer);
             if (recipe != null) {
+                // Remove associated RecipeIngredients
+                for (RecipeIngredient ri : recipe.getRecipeIngredients()) {
+                    em.remove(ri);
+                }
+                // Clear associations
+                recipe.getRecipeIngredients().clear();
+                // Remove the Recipe entity
                 em.remove(recipe);
             }
             em.getTransaction().commit();
         }
-
     }
 
     @Override

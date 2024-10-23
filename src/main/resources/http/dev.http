@@ -6,11 +6,11 @@ GET {{url}}/recipes/1
 
 ###
 
-GET {{url}}/recipes/name/Pasta
+GET {{url}}/recipes/name/Rice
 
 ###
 
-Get {{url}}/recipes/servings/4
+GET {{url}}/recipes/servings/4 servings
 
 ###
 
@@ -19,9 +19,28 @@ Content-Type: application/json
 
 {
   "recipeName": "Pasta",
-  "recipeIngredients": "Pasta, Tomato Sauce, Cheese",
+  "servings": "3 servings",
   "instructions": "Boil Pasta, Add Tomato Sauce, Add Cheese",
-  "servings": 3
+  "recipeIngredients": [
+    {
+      "ingredient": {
+        "ingredientName": "Pasta"
+      },
+      "amount": "200g"
+    },
+    {
+      "ingredient": {
+        "ingredientName": "Tomato Sauce"
+      },
+      "amount": "100ml"
+    },
+    {
+      "ingredient": {
+        "ingredientName": "Cheese"
+      },
+      "amount": "50g"
+    }
+  ]
 }
 
 ###
@@ -31,9 +50,31 @@ Content-Type: application/json
 
 {
   "recipeName": "Noodles",
-    "recipeIngredients": "Noodles, Soy Sauce, Vegetables",
-    "instructions": "Boil Noodles, Add Soy Sauce, Add Vegetables",
-    "servings": 2
+  "servings": "2 servings",
+  "instructions": "Boil Noodles, Add Soy Sauce, Add Vegetables",
+  "recipeIngredients": [
+    {
+      "ingredient": {
+        "id": 1,
+        "ingredientName": "Noodles"
+      },
+      "amount": "150g"
+    },
+    {
+      "ingredient": {
+        "id": 2,
+        "ingredientName": "Soy Sauce"
+      },
+      "amount": "50ml"
+    },
+    {
+      "ingredient": {
+        "id": 3,
+        "ingredientName": "Vegetables"
+      },
+      "amount": "100g"
+    }
+  ]
 }
 
 ###

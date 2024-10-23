@@ -44,17 +44,14 @@ public class RecipeDTO
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RecipeDTO recipeDTO)) return false;
-
-        return getId().equals(recipeDTO.getId());
+        return (id != null ? id.equals(recipeDTO.id) : recipeDTO.id == null);
     }
 
     @Override
-    public int hashCode()
-    {
-        return getId().hashCode();
+    public int hashCode() {
+        return (id != null ? id.hashCode() : 0);
     }
 }

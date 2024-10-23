@@ -44,10 +44,9 @@ public class IngredientDTO
     }
 
     @Override
-    public int hashCode()
-    {
-        int result = getId().hashCode();
-        result = 31 * result + getIngredientName().hashCode();
+    public int hashCode() {
+        int result = (id != null ? id.hashCode() : 0);
+        result = 31 * result + ingredientName.hashCode();
         return result;
     }
 }
