@@ -1,5 +1,6 @@
 package dat.entities;
 
+import dat.dtos.IngredientDTO;
 import dat.dtos.RecipeDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +25,6 @@ public class Recipe
     @Setter
     private String recipeName;
 
-    @Setter
     @ManyToMany(mappedBy = "recipes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ingredient> ingredients;
 
@@ -39,6 +39,13 @@ public class Recipe
         this.recipeName = recipeName;
         this.servings = servings;
         this.instructions = instructions;
+    }
+
+    public void setIngredients(Set<IngredientDTO> ingredientDTOs)
+    {
+        this.ingredients = ingredientDTOs.stream()
+                .map(Ingredient::new)
+                .collect(Collectors.toSet());
     }
 
     public Recipe(RecipeDTO recipeDTO)
