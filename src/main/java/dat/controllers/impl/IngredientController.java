@@ -3,7 +3,6 @@ package dat.controllers.impl;
 import dat.config.HibernateConfig;
 import dat.controllers.IController;
 import dat.daos.impl.IngredientDAO;
-import dat.daos.impl.RecipeDAO;
 import dat.dtos.IngredientDTO;
 import dat.dtos.RecipeDTO;
 import io.javalin.http.Context;
@@ -40,7 +39,17 @@ public class IngredientController implements IController<IngredientDTO, Integer>
         List<IngredientDTO> ingredientDTOS = dao.readAll();
         // response
         ctx.res().setStatus(200);
-        ctx.json(ingredientDTOS, RecipeDTO.class);
+        ctx.json(ingredientDTOS, IngredientDTO.class);
+    }
+
+    public void getRecipesByIngredientName(Context ctx) {
+        // request
+        String ingredientName = ctx.pathParam("ingredientName");
+        // List of DTOS
+        List<IngredientDTO> ingredientDTOS = dao.getRecipesByIngredientName(ingredientName);
+        // response
+        ctx.res().setStatus(200);
+        ctx.json(ingredientDTOS, IngredientDTO.class);
     }
 
     @Override

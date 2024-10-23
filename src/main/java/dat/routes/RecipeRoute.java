@@ -4,7 +4,6 @@ import dat.controllers.impl.RecipeController;
 import io.javalin.apibuilder.EndpointGroup;
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-
 public class RecipeRoute
 {
     private final RecipeController recipeController = new RecipeController();
@@ -16,8 +15,8 @@ public class RecipeRoute
         {
                 get("/", recipeController::readAll);
                 get("/{id}", recipeController::read);
-                get("/{name}", recipeController::read);
-                get("/{servings}", recipeController::read);
+                get("/name/{name}", recipeController::readByName);
+                get("/servings/{servings}", recipeController::readByServings);
 
                 post("/", recipeController::create);
                 put("/{id}", recipeController::update);

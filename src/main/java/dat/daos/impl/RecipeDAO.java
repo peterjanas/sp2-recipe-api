@@ -47,6 +47,28 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
         }
     }
 
+    public List<RecipeDTO> readByName(String name) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<RecipeDTO> query = em.createQuery("SELECT new dat.dtos.RecipeDTO(r) FROM Recipe r WHERE r.recipeName = :name", RecipeDTO.class);
+            query.setParameter("name", name);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<RecipeDTO> readByServings(String servings) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<RecipeDTO> query = em.createQuery("SELECT new dat.dtos.RecipeDTO(r) FROM Recipe r WHERE r.servings = :servings", RecipeDTO.class);
+            query.setParameter("servings", servings);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public RecipeDTO create(RecipeDTO recipeDTO)
     {
