@@ -25,6 +25,7 @@ public class Recipe
     @Setter
     private String recipeName;
 
+    @Setter
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
 

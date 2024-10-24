@@ -8,34 +8,29 @@ GET {{url}}/recipes/name/Rice
 GET {{url}}/recipes/servings/4 servings
 
 ### Lav en ny opskrift med pasta
-POST http://localhost:7070/api/recipes
+POST {{url}}/recipes
 Content-Type: application/json
 
 {
-  "recipeName": "Pasta",
-  "servings": "3 servings",
-  "instructions": "Boil Pasta, Add Tomato Sauce, Add Cheese",
+  "recipeName": "Garlic Chicken",
+  "servings": "4 servings",
+  "instructions": "Cook chicken with garlic.",
   "recipeIngredients": [
     {
       "ingredient": {
-        "ingredientName": "Pasta"
+        "ingredientName": "Chicken"
       },
-      "amount": "200g"
+      "amount": "250g"
     },
     {
       "ingredient": {
-        "ingredientName": "Tomato Sauce"
+        "ingredientName": "Garlic"
       },
-      "amount": "100ml"
-    },
-    {
-      "ingredient": {
-        "ingredientName": "Cheese"
-      },
-      "amount": "50g"
+      "amount": "2 cloves"
     }
   ]
 }
+
 
 ### Ændr chicken and rice til noodles
 PUT {{url}}/recipes/1
