@@ -53,10 +53,12 @@ public class IngredientController implements IController<IngredientDTO, Integer>
     }
 
     @Override
-    public void create(Context ctx)
-    {
+    // IngredientController.java
+    public void create(Context ctx) {
         // request
         IngredientDTO jsonRequest = ctx.bodyAsClass(IngredientDTO.class);
+        // Ensure id is null before persisting
+        jsonRequest = new IngredientDTO(null, jsonRequest.getIngredientName());
         // DTO
         IngredientDTO ingredientDTO = dao.create(jsonRequest);
         // response

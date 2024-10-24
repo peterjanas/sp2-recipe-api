@@ -50,8 +50,8 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     public List<RecipeDTO> readByName(String name) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<RecipeDTO> query = em.createQuery("SELECT new dat.dtos.RecipeDTO(r) FROM Recipe r WHERE r.recipeName = :name", RecipeDTO.class);
-            query.setParameter("name", name);
+            TypedQuery<RecipeDTO> query = em.createQuery("SELECT new dat.dtos.RecipeDTO(r) FROM Recipe r WHERE LOWER(r.recipeName) LIKE LOWER(:name)", RecipeDTO.class);
+            query.setParameter("name", "%" + name + "%");
             return query.getResultList();
         } finally {
             em.close();
