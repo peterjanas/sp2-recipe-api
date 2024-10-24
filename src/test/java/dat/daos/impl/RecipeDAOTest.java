@@ -136,25 +136,12 @@ class RecipeDAOTest
     {
         List<RecipeDTO> recipeDTOS = recipeDAO.readAll();
         RecipeDTO recipetbddeleted = recipeDTOS.get(1);
-        //RecipeDTO recipetbddeleted = recipeDAO.read(1);
         recipeDAO.delete(recipetbddeleted.getId());
         List<RecipeDTO> recipeDTOSCheck = recipeDAO.readAll();
         assertEquals(1, recipeDTOSCheck.size());
     }
 
-    @Test
-    void deleted()
-    {
-        // Dynamically retrieve the recipe by name using readByName
-        RecipeDTO recipeToDelete = recipeDAO.readByName("Garlic Chicken").get(0);  // Adjust to match the exact name
 
-        // Perform the delete
-        recipeDAO.delete(recipeToDelete.getId());
-
-        // Verify the recipe no longer exists in the database
-        List<RecipeDTO> remainingRecipes = recipeDAO.readAll();
-        assertEquals(1, remainingRecipes.size());
-    }
 
     @Test
     void readByName()

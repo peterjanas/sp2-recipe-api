@@ -3,38 +3,37 @@ package dat.entities;
 import dat.dtos.IngredientDTO;
 import dat.dtos.RecipeDTO;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @ToString
 public class Recipe
 {
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recipe_id", nullable = false, unique = true)
     private int id;
 
+
     @Column(name = "recipe_name", nullable = false, unique = true)
-    @Setter
     private String recipeName;
 
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
 
-    @Setter
+
     private String servings;
 
-    @Setter
+
     private String instructions;
 
     public Recipe(String recipeName, String servings, String instructions)
