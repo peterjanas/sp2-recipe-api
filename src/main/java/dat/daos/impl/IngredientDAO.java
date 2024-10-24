@@ -5,6 +5,7 @@ import dat.dtos.IngredientDTO;
 import dat.entities.Ingredient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import lombok.NoArgsConstructor;
 
@@ -55,15 +56,23 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
     }
 
     @Override
-    public IngredientDTO create(IngredientDTO ingredientDTO)
-    {
-        try (EntityManager em = emf.createEntityManager())
-        {
-            em.getTransaction().begin();
-            Ingredient ingredient = new Ingredient(ingredientDTO);
+    // IngredientDAO.java
+    public IngredientDTO create(IngredientDTO ingredientDTO) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            // Ensure id is null before persisting
+            Ingredient ingredient = new Ingredient();
+            ingredient.setIngredientName(ingredientDTO.getIngredientName());
             em.persist(ingredient);
-            em.getTransaction().commit();
+            transaction.commit();
             return new IngredientDTO(ingredient);
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            em.close();
         }
     }
 

@@ -3,12 +3,12 @@ GET {{url}}/recipes
 ### Find opskrifter med id som er 1
 GET {{url}}/recipes/1
 ### Find opskrifter med rice
-GET {{url}}/recipes/name/Rice
+GET {{url}}/recipes/name/rice
 ### Find opskrifter med 4 portioner
 GET {{url}}/recipes/servings/4 servings
 
 ### Lav en ny opskrift med pasta
-POST http://localhost:7070/api/recipes
+POST {{url}}/recipes
 Content-Type: application/json
 
 {
@@ -70,16 +70,22 @@ Content-Type: application/json
 ###
 DELETE {{url}}/recipes/1
 
-### Opskrifter med rice som ingrediens
-GET {{url}}/ingredients/findrecipefromingredient/2
-
 ### Lav en ny ingrediens
 POST {{url}}/ingredients
 Content-Type: application/json
+
+{
+  "ingredientName": "Tahini"
+}
 
 ### Ændr garlic til noget andet
 PUT {{url}}/ingredients/4
 Content-Type: application/json
 
+{
+  "ingredientName": "Ginger"
+}
 ### Slet chicken
 DELETE {{url}}/ingredients/1
+
+### mangler to delete nederst, put på linje linje 41 og get på linje 6
