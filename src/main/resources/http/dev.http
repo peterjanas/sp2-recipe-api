@@ -12,55 +12,44 @@ POST {{url}}/recipes
 Content-Type: application/json
 
 {
-  "recipeName": "Pasta",
-  "servings": "3 servings",
-  "instructions": "Boil Pasta, Add Tomato Sauce, Add Cheese",
+  "recipeName": "Garlic Chicken",
+  "servings": "4 servings",
+  "instructions": "Cook chicken with garlic.",
   "recipeIngredients": [
     {
       "ingredient": {
-        "ingredientName": "Pasta"
+        "ingredientName": "Chicken"
       },
-      "amount": "200g"
+      "amount": "250g"
     },
     {
       "ingredient": {
-        "ingredientName": "Tomato Sauce"
+        "ingredientName": "Garlic"
       },
-      "amount": "100ml"
-    },
-    {
-      "ingredient": {
-        "ingredientName": "Cheese"
-      },
-      "amount": "50g"
+      "amount": "2 cloves"
     }
   ]
 }
 
-### Ændr chicken and rice til noodles
+
+### Ændr chicken and rice til Chicken and Onion Stir-Fry
 PUT {{url}}/recipes/1
 Content-Type: application/json
 
 {
-  "recipeName": "Noodles",
+  "recipeName": "Chicken and Onion Stir-Fry",
   "servings": "2 servings",
-  "instructions": "Boil Noodles, Add Soy Sauce, Add Vegetables",
+  "instructions": "Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste.",
   "recipeIngredients": [
     {
       "ingredient": {
-        "ingredientName": "Noodles"
+        "ingredientName": "Chicken"
       },
-      "amount": "150g"
+      "amount": "300g"
     },
     {
       "ingredient": {
-        "ingredientName": "Soy Sauce"
-      },
-      "amount": "50ml"
-    },
-    {
-      "ingredient": {
-        "ingredientName": "Vegetables"
+        "ingredientName": "Onion"
       },
       "amount": "100g"
     }
