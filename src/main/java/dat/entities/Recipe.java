@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class Recipe
 {
     @Id
@@ -25,7 +27,8 @@ public class Recipe
     @Setter
     private String recipeName;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
 
     @Setter

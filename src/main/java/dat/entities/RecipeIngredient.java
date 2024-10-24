@@ -23,7 +23,7 @@ public class RecipeIngredient {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id", nullable = false)
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     @ManyToOne
