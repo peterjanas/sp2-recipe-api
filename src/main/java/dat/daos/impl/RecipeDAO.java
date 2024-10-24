@@ -69,32 +69,29 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
         }
     }
 
-    @Override
-    public RecipeDTO create(RecipeDTO recipeDTO)
-    {
+    public RecipeDTO create(RecipeDTO recipeDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            Recipe recipe = new Recipe(recipeDTO);
-            em.persist(recipe);
+            Recipe recipe = new Recipe();
+            recipe.setRecipeName(recipeDTO.getRecipeName());
+            recipe.setInstructions(recipeDTO.getInstructions());
+            recipe.setServings(recipeDTO.getServings());
 
-            // Persist associated RecipeIngredients
             Set<RecipeIngredient> recipeIngredients = recipeDTO.getRecipeIngredients().stream()
-                    .map(dto -> new RecipeIngredient(
-                            recipe,
-                            em.find(Ingredient.class, dto.getIngredient().getId()), // Fetch existing ingredient by id
-                            dto.getAmount()))
+                    .map(dto -> {
+                        Ingredient ingredient = findOrCreateIngredient(em, dto.getIngredient().getIngredientName());
+                        return new RecipeIngredient(recipe, ingredient, dto.getAmount());
+                    })
                     .collect(Collectors.toSet());
 
             recipe.setIngredients(recipeIngredients);
-
+            em.persist(recipe);
             em.getTransaction().commit();
             return new RecipeDTO(recipe);
         }
     }
 
-    @Override
-    public RecipeDTO update(Integer integer, RecipeDTO recipeDTO)
-    {
+    public RecipeDTO update(Integer integer, RecipeDTO recipeDTO) {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             Recipe recipe = em.find(Recipe.class, integer);
@@ -104,20 +101,35 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
             recipe.setInstructions(recipeDTO.getInstructions());
             recipe.setServings(recipeDTO.getServings());
 
-            // Update RecipeIngredients
+            // Clear the old recipe ingredients
+            recipe.getRecipeIngredients().clear();
+            em.flush();  // Ensure the clear operation is flushed to the database
+
+            // Add new RecipeIngredients
             Set<RecipeIngredient> newRecipeIngredients = recipeDTO.getRecipeIngredients().stream()
-                    .map(dto -> new RecipeIngredient(
-                            recipe,
-                            em.find(Ingredient.class, dto.getIngredient().getId()), // Fetch existing ingredient by id
-                            dto.getAmount()))
+                    .map(dto -> {
+                        Ingredient ingredient = findOrCreateIngredient(em, dto.getIngredient().getIngredientName());
+                        return new RecipeIngredient(recipe, ingredient, dto.getAmount());
+                    })
                     .collect(Collectors.toSet());
 
-            // Clear the old recipe ingredients and set the new ones
-            recipe.getRecipeIngredients().clear();
-            recipe.setIngredients(newRecipeIngredients);
+            recipe.getRecipeIngredients().addAll(newRecipeIngredients);
 
             em.getTransaction().commit();
             return new RecipeDTO(recipe);
+        }
+    }
+
+    private Ingredient findOrCreateIngredient(EntityManager em, String ingredientName) {
+        TypedQuery<Ingredient> query = em.createQuery("SELECT i FROM Ingredient i WHERE i.ingredientName = :name", Ingredient.class);
+        query.setParameter("name", ingredientName);
+        List<Ingredient> ingredients = query.getResultList();
+        if (ingredients.isEmpty()) {
+            Ingredient newIngredient = new Ingredient(ingredientName);
+            em.persist(newIngredient);
+            return newIngredient;
+        } else {
+            return ingredients.get(0);
         }
     }
 

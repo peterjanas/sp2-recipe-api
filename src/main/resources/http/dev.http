@@ -8,7 +8,7 @@ GET {{url}}/recipes/name/Rice
 GET {{url}}/recipes/servings/4 servings
 
 ### Lav en ny opskrift med pasta
-POST {{url}}/recipes
+POST http://localhost:7070/api/recipes
 Content-Type: application/json
 
 {
@@ -48,21 +48,18 @@ Content-Type: application/json
   "recipeIngredients": [
     {
       "ingredient": {
-        "id": 1,
         "ingredientName": "Noodles"
       },
       "amount": "150g"
     },
     {
       "ingredient": {
-        "id": 2,
         "ingredientName": "Soy Sauce"
       },
       "amount": "50ml"
     },
     {
       "ingredient": {
-        "id": 3,
         "ingredientName": "Vegetables"
       },
       "amount": "100g"
