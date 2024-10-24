@@ -100,7 +100,17 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
             }
             em.getTransaction().commit();
         }
+    }
 
+    public List<IngredientDTO> readByName(String name) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<IngredientDTO> query = em.createQuery("SELECT new dat.dtos.IngredientDTO(i) FROM Ingredient i WHERE LOWER(i.ingredientName) = LOWER(:name)", IngredientDTO.class);
+            query.setParameter("name", name);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     @Override
