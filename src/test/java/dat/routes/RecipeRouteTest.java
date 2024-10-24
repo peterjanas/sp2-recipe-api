@@ -20,6 +20,7 @@ import java.util.Set;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class RecipeRouteTest
@@ -131,6 +132,8 @@ class RecipeRouteTest
     @Test
     void UpdateRecipe() {
         RecipeDTO chickenRice = recipeDao.read(1);
+        assertNotNull(chickenRice, "Recipe should not be null");
+
 
         chickenRice.setRecipeName("Chicken and Onion Stir-Fry");
         chickenRice.setServings("2 servings");
@@ -138,6 +141,9 @@ class RecipeRouteTest
 
         IngredientDTO chickenIngredient = ingredientDAO.readByName("Chicken").get(0);
         IngredientDTO onionIngredient = ingredientDAO.readByName("Onion").get(0);
+        assertNotNull(chickenIngredient, "Chicken ingredient should not be null");
+        assertNotNull(onionIngredient, "Onion ingredient should not be null");
+
 
         RecipeIngredientDTO chickenRecipeIngredient = new RecipeIngredientDTO(chickenIngredient, "300g");
         RecipeIngredientDTO onionRecipeIngredient = new RecipeIngredientDTO(onionIngredient, "100g");
