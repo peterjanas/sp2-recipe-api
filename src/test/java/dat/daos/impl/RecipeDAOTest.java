@@ -20,6 +20,8 @@ class RecipeDAOTest
     private static EntityManagerFactory emf;
     private static Populate populate;
 
+    private static List<RecipeDTO> recipes;
+
     @BeforeAll
     static void setUpAll()
     {
@@ -81,23 +83,22 @@ class RecipeDAOTest
     @Test
     void update()
     {
-        /*RecipeDTO recipeDTO = new RecipeDTO("Chicken and Rice", "4 servings", "Cook chicken, rice, and mix.");
+        RecipeDTO recipeDTO = new RecipeDTO("plain Chicken", "4 servings", "Cook chicken, rice, and mix.");
         RecipeDTO recipe = recipeDAO.create(recipeDTO);
-        recipe.setRecipeName("Garlic Chicken");
-        RecipeDTO updatedRecipe = recipeDAO.update(recipe);
+        recipe.setRecipeName("onion Chicken");
+        RecipeDTO updatedRecipe = recipeDAO.update(recipe.getId(), recipe);
         assertNotNull(updatedRecipe);
-        assertEquals("Garlic Chicken", updatedRecipe.getRecipeName());*/
+        assertEquals("onion Chicken", updatedRecipe.getRecipeName());
 
-        RecipeDTO recipeDTO = new RecipeDTO("Chicken and Rice", "4 servings", "Cook chicken, rice, and mix.");
-        RecipeDTO recipe = recipeDAO.create(recipeDTO);
-        recipe.setRecipeName("Garlic Chicken");
-
+        //note that the recipe ingredients are not updated
     }
 
     @Test
     void delete()
     {
-        recipeDAO.delete(recipeDAO.read(1).getId());
+        RecipeDTO recipetbddeleted = recipeDAO.read(1);
+        recipeDAO.delete(recipetbddeleted.getId());
+        //recipeDAO.delete(recipeDAO.read(1).getId());
         List<RecipeDTO> recipeDTOS = recipeDAO.readAll();
         assertEquals(1, recipeDTOS.size());
     }
@@ -112,8 +113,4 @@ class RecipeDAOTest
     {
     }
 
-    @Test
-    void validatePrimaryKey()
-    {
-    }
 }

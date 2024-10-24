@@ -141,14 +141,15 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
 
             Recipe recipe = em.find(Recipe.class, integer);
             if (recipe != null) {
-                em.remove(recipe);  // This will cascade the removal to RecipeIngredient due to CascadeType.ALL and orphanRemoval = true
+                Set<RecipeIngredient> recipeIngredients = recipe.getRecipeIngredients();
+
+                for (RecipeIngredient ri : recipeIngredients) {
+                    em.remove(ri);
+                }
+
+                em.remove(recipe);
+                // This will cascade the removal to RecipeIngredient due to CascadeType.ALL and orphanRemoval = true
             }
-
-            // Ensure the delete is flushed to the database immediately
-            em.flush();
-
-            // Clear the persistence context to detach any remaining managed entities
-            em.clear();
 
             em.getTransaction().commit();
         } catch (Exception e) {
