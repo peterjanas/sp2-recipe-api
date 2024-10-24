@@ -65,36 +65,45 @@ class RecipeDAOTest
     @Test
     void create()
     {
+        // Dynamically retrieve ingredients by their names using readByName
+        IngredientDTO chickenIngredient = ingredientDAO.readByName("Chicken").get(0);
+        IngredientDTO garlicIngredient = ingredientDAO.readByName("Garlic").get(0);
+
         RecipeDTO recipeDTO = new RecipeDTO("Chicken and garlic", "4 servings", "Cook chicken, mix garlic in.");
-        RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredientDAO.read(1), "250g");
-        RecipeIngredientDTO garlicIngredient = new RecipeIngredientDTO(ingredientDAO.read(4), "2 cloves");
-        recipeDTO.setRecipeIngredients(Set.of(chickenIngredient, garlicIngredient));
+        RecipeIngredientDTO chickenRecipeIngredient = new RecipeIngredientDTO(chickenIngredient, "250g");
+        RecipeIngredientDTO garlicRecipeIngredient = new RecipeIngredientDTO(garlicIngredient, "2 cloves");
+        recipeDTO.setRecipeIngredients(Set.of(chickenRecipeIngredient, garlicRecipeIngredient));
+
         RecipeDTO recipe = recipeDAO.create(recipeDTO);
 
-        //check recipe
+        // Check the recipe
         assertNotNull(recipe);
         assertEquals(recipeDTO.getRecipeName(), recipe.getRecipeName());
-        //check ingredient
+        // Check the ingredients
         assertEquals(2, recipe.getRecipeIngredients().size());
-        assertTrue(recipe.getRecipeIngredients().stream().anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Chicken") && ri.getAmount().equals("250g")));
+        assertTrue(recipe.getRecipeIngredients().stream()
+                .anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Chicken") && ri.getAmount().equals("250g")));
+        assertTrue(recipe.getRecipeIngredients().stream()
+                .anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Garlic") && ri.getAmount().equals("2 cloves")));
     }
+
 
     @Test
     void update()
     {
-        // Create a new recipe with initial details
-        RecipeDTO recipeDTO = new RecipeDTO("plain Chicken", "4 servings", "Cook plain chicken.");
-        RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredientDAO.read(1), "200g");
-        recipeDTO.setRecipeIngredients(Set.of(chickenIngredient));
-
-        // Persist the new recipe
-        RecipeDTO recipe = recipeDAO.create(recipeDTO);
+        // Dynamically retrieve the recipe by name using readByName
+        RecipeDTO recipe = recipeDAO.readByName("Chicken and Rice").get(0);  // Adjust to match the exact name
 
         // Modify the recipe's name and ingredients
-        recipe.setRecipeName("onion Chicken");
-        RecipeIngredientDTO onionIngredient = new RecipeIngredientDTO(ingredientDAO.read(3), "100g"); // Adding new ingredient
-        RecipeIngredientDTO updatedChickenIngredient = new RecipeIngredientDTO(ingredientDAO.read(1), "250g"); // Updating existing ingredient
-        recipe.setRecipeIngredients(Set.of(updatedChickenIngredient, onionIngredient)); // Update ingredients
+        recipe.setRecipeName("Onion Chicken");
+
+        // Dynamically retrieve ingredients for the update
+        IngredientDTO chickenIngredient = ingredientDAO.readByName("Chicken").get(0);
+        IngredientDTO onionIngredient = ingredientDAO.readByName("Onion").get(0);
+
+        RecipeIngredientDTO updatedChickenIngredient = new RecipeIngredientDTO(chickenIngredient, "250g");
+        RecipeIngredientDTO updatedOnionIngredient = new RecipeIngredientDTO(onionIngredient, "1 large");
+        recipe.setRecipeIngredients(Set.of(updatedChickenIngredient, updatedOnionIngredient));  // Update ingredients
 
         // Perform the update
         RecipeDTO updatedRecipe = recipeDAO.update(recipe.getId(), recipe);
@@ -102,12 +111,15 @@ class RecipeDAOTest
         // Verify the updated recipe is not null
         assertNotNull(updatedRecipe);
         // Verify the recipe name is updated
-        assertEquals("onion Chicken", updatedRecipe.getRecipeName());
-        // Verify the recipe ingredients are updated (2 ingredients, updated amounts)
+        assertEquals("Onion Chicken", updatedRecipe.getRecipeName());
+        // Verify the recipe ingredients are updated
         assertEquals(2, updatedRecipe.getRecipeIngredients().size());
-        assertTrue(updatedRecipe.getRecipeIngredients().stream().anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Chicken") && ri.getAmount().equals("250g")));
-        assertTrue(updatedRecipe.getRecipeIngredients().stream().anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Onion") && ri.getAmount().equals("100g")));
+        assertTrue(updatedRecipe.getRecipeIngredients().stream()
+                .anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Chicken") && ri.getAmount().equals("250g")));
+        assertTrue(updatedRecipe.getRecipeIngredients().stream()
+                .anyMatch(ri -> ri.getIngredient().getIngredientName().equals("Onion") && ri.getAmount().equals("1 large")));
     }
+
 
 
     @Test
@@ -117,6 +129,31 @@ class RecipeDAOTest
         recipeDAO.delete(recipetbddeleted.getId());
         List<RecipeDTO> recipeDTOS = recipeDAO.readAll();
         assertEquals(1, recipeDTOS.size());
+    }
+
+    @Test
+    void delete2()
+    {
+        List<RecipeDTO> recipeDTOS = recipeDAO.readAll();
+        RecipeDTO recipetbddeleted = recipeDTOS.get(1);
+        //RecipeDTO recipetbddeleted = recipeDAO.read(1);
+        recipeDAO.delete(recipetbddeleted.getId());
+        List<RecipeDTO> recipeDTOSCheck = recipeDAO.readAll();
+        assertEquals(1, recipeDTOSCheck.size());
+    }
+
+    @Test
+    void deleted()
+    {
+        // Dynamically retrieve the recipe by name using readByName
+        RecipeDTO recipeToDelete = recipeDAO.readByName("Garlic Chicken").get(0);  // Adjust to match the exact name
+
+        // Perform the delete
+        recipeDAO.delete(recipeToDelete.getId());
+
+        // Verify the recipe no longer exists in the database
+        List<RecipeDTO> remainingRecipes = recipeDAO.readAll();
+        assertEquals(1, remainingRecipes.size());
     }
 
     @Test
