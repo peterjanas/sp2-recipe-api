@@ -131,9 +131,8 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
             if (recipe != null) {
                 Set<RecipeIngredient> recipeIngredients = recipe.getRecipeIngredients();
 
-                for (int i = 0; i < recipeIngredients.size(); i++)
-                {
-                    recipeIngredients.stream().forEach(ri -> em.remove(ri));
+                for (RecipeIngredient ri : recipeIngredients) {
+                    em.remove(ri);
                 }
 
                 em.remove(recipe);
