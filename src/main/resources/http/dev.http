@@ -32,30 +32,24 @@ Content-Type: application/json
 }
 
 
-### Ændr chicken and rice til noodles
+### Ændr chicken and rice til Chicken and Onion Stir-Fry
 PUT {{url}}/recipes/1
 Content-Type: application/json
 
 {
-  "recipeName": "Noodles",
+  "recipeName": "Chicken and Onion Stir-Fry",
   "servings": "2 servings",
-  "instructions": "Boil Noodles, Add Soy Sauce, Add Vegetables",
+  "instructions": "Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste.",
   "recipeIngredients": [
     {
       "ingredient": {
-        "ingredientName": "Noodles"
+        "ingredientName": "Chicken"
       },
-      "amount": "150g"
+      "amount": "300g"
     },
     {
       "ingredient": {
-        "ingredientName": "Soy Sauce"
-      },
-      "amount": "50ml"
-    },
-    {
-      "ingredient": {
-        "ingredientName": "Vegetables"
+        "ingredientName": "Onion"
       },
       "amount": "100g"
     }

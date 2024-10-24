@@ -127,10 +127,23 @@ class RecipeRouteTest
         assertThat(createdRecipe.getServings(), equalTo(newRecipe.getServings()));
     }
 
-/*
+
     @Test
-    void shouldUpdateRecipeSuccessfully() {
-        chickenRice.setRecipeName("Chicken Rice Updated");
+    void UpdateRecipe() {
+        RecipeDTO chickenRice = recipeDao.read(1);
+
+        chickenRice.setRecipeName("Chicken and Onion Stir-Fry");
+        chickenRice.setServings("2 servings");
+        chickenRice.setInstructions("Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste.");
+
+        IngredientDTO chickenIngredient = ingredientDAO.readByName("Chicken").get(0);
+        IngredientDTO onionIngredient = ingredientDAO.readByName("Onion").get(0);
+
+        RecipeIngredientDTO chickenRecipeIngredient = new RecipeIngredientDTO(chickenIngredient, "300g");
+        RecipeIngredientDTO onionRecipeIngredient = new RecipeIngredientDTO(onionIngredient, "100g");
+
+        chickenRice.setRecipeIngredients(Set.of(chickenRecipeIngredient, onionRecipeIngredient));
+
         Recipe updatedRecipe =
                 given()
                         .contentType("application/json")
@@ -143,10 +156,12 @@ class RecipeRouteTest
                         .extract()
                         .as(Recipe.class);
 
-        assertThat(updatedRecipe.getRecipeName(), equalTo(chickenRice.getRecipeName()));
-        assertThat(updatedRecipe.getInstructions(), equalTo(chickenRice.getInstructions()));
+        assertThat(updatedRecipe.getRecipeName(), equalTo("Chicken and Onion Stir-Fry"));
+        assertThat(updatedRecipe.getServings(), equalTo("2 servings"));
+        assertThat(updatedRecipe.getInstructions(), equalTo("Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste."));
     }
 
+/*
     @Test
     void shouldDeleteRecipeSuccessfully() {
         given()
