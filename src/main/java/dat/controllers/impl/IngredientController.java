@@ -46,7 +46,7 @@ public class IngredientController implements IController<IngredientDTO, Integer>
         // request
         String ingredientName = ctx.pathParam("ingredientName");
         // List of DTOS
-        List<IngredientDTO> ingredientDTOS = dao.getRecipesByIngredientName(ingredientName);
+        List<RecipeDTO> ingredientDTOS = dao.getRecipesByIngredientName(ingredientName);
         // response
         ctx.res().setStatus(200);
         ctx.json(ingredientDTOS, IngredientDTO.class);

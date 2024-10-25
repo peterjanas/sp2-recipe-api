@@ -13,7 +13,7 @@ public class IngredientRoute {
     {
         return () ->
         {
-            get("/findrecipefromingredient/{name}", ingredientController::getRecipesByIngredientName);
+            get("/findrecipefromingredient/{ingredientName}", ingredientController::getRecipesByIngredientName);
             post("/", ingredientController::create);
             put("/{id}", ingredientController::update);
             delete("/{id}", ingredientController::delete);

@@ -59,6 +59,9 @@ Content-Type: application/json
 ###
 DELETE {{url}}/recipes/1
 
+### find opskrifter med en bestemt ingrediens
+GET {{url}}/ingredients/findrecipefromingredient/chicken
+
 ### Lav en ny ingrediens
 POST {{url}}/ingredients
 Content-Type: application/json

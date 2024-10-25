@@ -2,6 +2,7 @@ package dat.daos.impl;
 
 import dat.daos.IDAO;
 import dat.dtos.IngredientDTO;
+import dat.dtos.RecipeDTO;
 import dat.entities.Ingredient;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -44,10 +45,13 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
         }
     }
 
-    public List<IngredientDTO> getRecipesByIngredientName(String ingredientName) {
+    public List<RecipeDTO> getRecipesByIngredientName(String ingredientName) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<IngredientDTO> query = em.createQuery("SELECT new dat.dtos.IngredientDTO(i) FROM Ingredient i WHERE i.ingredientName = :ingredientName", IngredientDTO.class);
+            TypedQuery<RecipeDTO> query = em.createQuery(
+                    "SELECT new dat.dtos.RecipeDTO(r) FROM Recipe r JOIN r.recipeIngredients ri WHERE LOWER(ri.ingredient.ingredientName) LIKE LOWER(CONCAT('%', :ingredientName, '%'))",
+                    RecipeDTO.class
+            );
             query.setParameter("ingredientName", ingredientName);
             return query.getResultList();
         } finally {
