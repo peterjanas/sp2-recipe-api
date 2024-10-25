@@ -45,13 +45,13 @@ Content-Type: application/json
       "ingredient": {
         "ingredientName": "Chicken"
       },
-      "amount": "300g"
+      "amount": "200g"
     },
     {
       "ingredient": {
         "ingredientName": "Onion"
       },
-      "amount": "100g"
+      "amount": "1 large"
     }
   ]
 }
