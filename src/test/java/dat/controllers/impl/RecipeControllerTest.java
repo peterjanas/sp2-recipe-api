@@ -2,8 +2,14 @@ package dat.controllers.impl;
 
 import dat.config.ApplicationConfig;
 import dat.config.HibernateConfig;
+import dat.daos.impl.IngredientDAO;
+import dat.daos.impl.RecipeDAO;
+import dat.dtos.IngredientDTO;
 import dat.dtos.RecipeDTO;
+import dat.dtos.RecipeIngredientDTO;
+import dat.entities.Ingredient;
 import dat.entities.Recipe;
+import dat.entities.RecipeIngredient;
 import dat.security.controllers.SecurityController;
 import dat.security.daos.SecurityDAO;
 import dat.security.exceptions.ValidationException;
@@ -15,10 +21,14 @@ import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RecipeControllerTest {
@@ -26,6 +36,8 @@ class RecipeControllerTest {
     private final static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private final static SecurityController securityController = SecurityController.getInstance();
     private final static SecurityDAO securityDAO = new SecurityDAO(emf);
+    private static RecipeDAO recipeDao = RecipeDAO.getInstance(emf);
+    private static IngredientDAO ingredientDAO = IngredientDAO.getInstance(emf);
     private static Javalin app;
     private static Recipe[] recipes;
     private static Recipe ChickenRice, GarlicChicken;
@@ -84,8 +96,6 @@ class RecipeControllerTest {
 
     @Test
     void readAll() {
-        System.out.println("usertoken: " + userToken);
-        System.out.println("admintoken: " + adminToken);
         List<RecipeDTO> reicpeDTO =
                 given()
                         .when()
@@ -119,9 +129,60 @@ class RecipeControllerTest {
     }
 
     @Test
-    void update()
-    {
+    void update() {
+        RecipeDTO chickenRice = recipeDao.readByName("Chicken and rice").get(0);
+        assertNotNull(chickenRice, "Recipe should not be null");
+
+
+        chickenRice.setRecipeName("Chicken and Onion Stir-Fry");
+        chickenRice.setServings("2 servings");
+        chickenRice.setInstructions("Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste.");
+
+        IngredientDTO chickenIngredient = ingredientDAO.readByName("Chicken").get(0);
+        IngredientDTO riceIngredient = ingredientDAO.readByName("Rice").get(0);
+        IngredientDTO onionIngredient = ingredientDAO.readByName("Onion").get(0);
+        assertNotNull(chickenIngredient, "Chicken ingredient should not be null");
+        assertNotNull(onionIngredient, "Onion ingredient should not be null");
+
+
+        RecipeIngredientDTO chickenRecipeIngredient = new RecipeIngredientDTO(chickenIngredient, "200g");
+        RecipeIngredientDTO riceRecipeIngredient = new RecipeIngredientDTO(riceIngredient, "150g");
+        RecipeIngredientDTO onionRecipeIngredient = new RecipeIngredientDTO(onionIngredient, "100g");
+
+        chickenRice.setRecipeIngredients(Set.of(chickenRecipeIngredient, riceRecipeIngredient, onionRecipeIngredient));
+
+        Recipe updatedRecipe =
+                given()
+                .header("Authorization", adminToken)
+                .contentType("application/json")
+                .body(chickenRice)
+                .when()
+                .put(BASE_URL + "/recipes/" + chickenRice.getId())
+                .then()
+                .statusCode(200)
+                .log().all()
+                .extract()
+                .as(Recipe.class);
+
+        // Assert that the update was successful
+        assertThat(updatedRecipe.getRecipeName(), equalTo("Chicken and Onion Stir-Fry"));
+        assertThat(updatedRecipe.getServings(), equalTo("2 servings"));
+        assertThat(updatedRecipe.getInstructions(), equalTo("Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste."));
+
+        // Verify that the RecipeIngredients match by checking ingredient names and amounts
+        List<String> ingredientNames = updatedRecipe.getRecipeIngredients().stream()
+                .map(ri -> ri.getIngredient().getIngredientName())
+                .toList();
+        List<String> ingredientAmounts = updatedRecipe.getRecipeIngredients().stream()
+                .map(RecipeIngredient::getAmount)
+                .toList();
+
+        // Expected names and amounts
+        assertThat(ingredientNames, containsInAnyOrder("Chicken", "Rice", "Onion"));
+        assertThat(ingredientAmounts, containsInAnyOrder("200g", "150g", "100g"));
     }
+
+
 
     @Test
     void delete()
