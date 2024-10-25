@@ -5,7 +5,7 @@ FROM amazoncorretto:17-alpine
 COPY target/app.jar /app.jar
 
 # Expose the port your app runs on
-EXPOSE 7070
+EXPOSE 7007
 
 # Command to run your app
 CMD ["java", "-jar", "/app.jar"]
