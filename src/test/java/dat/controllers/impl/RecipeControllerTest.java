@@ -166,7 +166,7 @@ void create() {
                     .extract()
                     .as(RecipeDTO.class);
 
-    // Verify that the created recipe matches the input recipe data
+
     assertThat(createdRecipe.getRecipeName(), is(newRecipe.getRecipeName()));
     assertThat(createdRecipe.getServings(), is(newRecipe.getServings()));
     assertThat(createdRecipe.getInstructions(), is(newRecipe.getInstructions()));
