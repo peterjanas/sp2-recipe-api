@@ -8,9 +8,7 @@ import dat.daos.impl.RecipeDAO;
 import dat.dtos.IngredientDTO;
 import dat.dtos.RecipeDTO;
 import dat.dtos.RecipeIngredientDTO;
-import dat.entities.Ingredient;
 import dat.entities.Recipe;
-import dat.entities.RecipeIngredient;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -78,7 +76,7 @@ class RecipeRouteTest
     }
 
     @Test
-    void testReturnRecipeWhenIdIsValid()
+    void testReadById()
     {
         // Retrieve the expected recipe from the database
         RecipeDTO expectedRecipe = recipeDao.readByName("Chicken and rice").get(0);  // Get the recipe with ID 1 from the DAO
@@ -100,7 +98,7 @@ class RecipeRouteTest
     }
 
     @Test
-    void testAddNewRecipe()
+    void testCreateRecipe()
     {
         RecipeDTO newRecipe = new RecipeDTO("Garlic Super Chicken", "4 servings", "Cook chicken with garlic.");
 
