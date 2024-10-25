@@ -17,9 +17,9 @@ public class Main {
 
     public static void main(String[] args) {
         //Populate.main(args);
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        Populate populate = new Populate(emf);
-        populate.populateData();
+        //EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        //Populate populate = new Populate(emf);
+        //populate.populateData();
         ApplicationConfig.startServer(7007);
     }
 
