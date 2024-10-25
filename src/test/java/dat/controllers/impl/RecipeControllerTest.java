@@ -2,15 +2,19 @@ package dat.controllers.impl;
 
 import dat.config.ApplicationConfig;
 import dat.config.HibernateConfig;
+import dat.dtos.RecipeDTO;
 import dat.entities.Recipe;
 import dat.security.controllers.SecurityController;
 import dat.security.daos.SecurityDAO;
 import dat.security.exceptions.ValidationException;
 import dk.bugelhartmann.UserDTO;
 import io.javalin.Javalin;
+import io.restassured.common.mapper.TypeRef;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,7 +44,6 @@ class RecipeControllerTest {
     @BeforeEach
     void setUp() {
         // Populate the database with hotels and rooms
-        System.out.println("Populating database with hotels and rooms");
         recipes = Populate.populateData(emf);
         ChickenRice = recipes[0];
         GarlicChicken = recipes[1];
@@ -80,8 +83,24 @@ class RecipeControllerTest {
 
 
     @Test
-    void readAll()
-    {
+    void readAll() {
+        System.out.println("usertoken: " + userToken);
+        System.out.println("admintoken: " + adminToken);
+        List<RecipeDTO> reicpeDTO =
+                given()
+                        .when()
+                        .header("Authorization", userToken)
+                        .get(BASE_URL + "/recipes")
+                        .then()
+                        .statusCode(200)
+                        .body("size()", is(2))
+                        .log().all()
+                        .extract()
+                        .as(new TypeRef<List<RecipeDTO>>() {});
+
+        assertThat(reicpeDTO.size(), is(2));
+        assertThat(reicpeDTO.get(0).getRecipeName(), is("Chicken and Rice"));
+        assertThat(reicpeDTO.get(1).getRecipeName(), is("Garlic Chicken"));
     }
 
     @Test
