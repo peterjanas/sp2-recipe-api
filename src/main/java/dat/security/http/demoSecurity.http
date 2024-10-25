@@ -1,19 +1,6 @@
 ### A simple get request to the test endpoint. No need for login
 GET {{url}}/auth/test/
 
-###
-POST {{url}}/auth/login/
-
-{
-    "username": "user",
-    "password": "test123"
-}
-
-> {%
-    client.global.set("jwt_token", response.body.token);
-    console.log("JWT Token:", client.global.get("jwt_token"));
-%}
-
 ### Create a new user - this one will only get a USER role by default
 POST {{url}}/auth/register/
 
@@ -32,6 +19,33 @@ Authorization: Bearer {{jwt_token}}
 }
 Accept: application/json
 Authorization: Bearer {{jwt_token}}
+
+###
+POST {{url}}/auth/login/
+
+{
+    "username": "user",
+    "password": "test123"
+}
+
+> {%
+    client.global.set("jwt_token", response.body.token);
+    console.log("JWT Token:", client.global.get("jwt_token"));
+%}
+
+### Login as ADMIN
+POST {{url}}/auth/login/
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+> {%
+    client.global.set("jwt_token_admin", response.body.token);
+    console.log("JWT Token for ADMIN:", client.global.get("jwt_token_admin"));
+%}
 
 ###
 GET {{url}}/protected/user_demo/
