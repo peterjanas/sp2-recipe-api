@@ -8,6 +8,7 @@ import dat.dtos.IngredientDTO;
 import dat.dtos.RecipeDTO;
 import dat.dtos.RecipeIngredientDTO;
 import dat.entities.Ingredient;
+import dat.dtos.RecipeIngredientDTO;
 import dat.entities.Recipe;
 import dat.entities.RecipeIngredient;
 import dat.security.controllers.SecurityController;
@@ -29,6 +30,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.Matchers.not;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RecipeControllerTest {
@@ -46,7 +48,8 @@ class RecipeControllerTest {
     private static final String BASE_URL = "http://localhost:7007/api";
 
     @BeforeAll
-    void setUpAll() {
+    void setUpAll()
+    {
         HibernateConfig.setTest(true);
 
         // Start api
@@ -54,7 +57,8 @@ class RecipeControllerTest {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         // Populate the database with hotels and rooms
         recipes = Populate.populateData(emf);
         ChickenRice = recipes[0];
@@ -63,40 +67,46 @@ class RecipeControllerTest {
         userDTO = users[0];
         adminDTO = users[1];
 
-        try {
+        try
+        {
             UserDTO verifiedUser = securityDAO.getVerifiedUser(userDTO.getUsername(), userDTO.getPassword());
             UserDTO verifiedAdmin = securityDAO.getVerifiedUser(adminDTO.getUsername(), adminDTO.getPassword());
             userToken = "Bearer " + securityController.createToken(verifiedUser);
             adminToken = "Bearer " + securityController.createToken(verifiedAdmin);
-        }
-        catch (ValidationException e) {
+        } catch (ValidationException e)
+        {
             throw new RuntimeException(e);
         }
 
     }
 
     @AfterEach
-    void tearDown() {
-        try (EntityManager em = emf.createEntityManager()){
+    void tearDown()
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM User").executeUpdate();
             em.createQuery("DELETE FROM RecipeIngredient").executeUpdate();
             em.createQuery("DELETE FROM Recipe").executeUpdate();
             em.getTransaction().commit();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
     @AfterAll
-    void tearDownAll() {
+    void tearDownAll()
+    {
         ApplicationConfig.stopServer(app);
     }
 
 
     @Test
-    void readAll() {
-        List<RecipeDTO> reicpeDTO =
+    void readAll()
+    {
+        List<RecipeDTO> recipeDTO =
                 given()
                         .when()
                         .header("Authorization", userToken)
@@ -106,28 +116,86 @@ class RecipeControllerTest {
                         .body("size()", is(2))
                         .log().all()
                         .extract()
-                        .as(new TypeRef<List<RecipeDTO>>() {});
+                        .as(new TypeRef<List<RecipeDTO>>()
+                        {
+                        });
 
-        assertThat(reicpeDTO.size(), is(2));
-        assertThat(reicpeDTO.get(0).getRecipeName(), is("Chicken and Rice"));
-        assertThat(reicpeDTO.get(1).getRecipeName(), is("Garlic Chicken"));
+        assertThat(recipeDTO.size(), is(2));
+        assertThat(recipeDTO.get(0).getRecipeName(), is("Chicken and Rice"));
+        assertThat(recipeDTO.get(1).getRecipeName(), is("Garlic Chicken"));
     }
 
     @Test
     void readByName()
     {
+        String recipeName = "Garlic Chicken";
+        List<RecipeDTO> recipeDTOs =
+                given()
+                        .when()
+                        .header("Authorization", userToken)
+                        .get(BASE_URL + "/recipes/name/" + recipeName)
+                        .then()
+                        .statusCode(200)
+                        .log().all()
+                        .extract()
+                        .as(new TypeRef<List<RecipeDTO>>()
+                        {
+                        });
+
+        assertThat(recipeDTOs.size(), is(1));
+        assertThat(recipeDTOs.get(0).getRecipeName(), is(recipeName));
     }
 
     @Test
     void readByServings()
     {
+        String servings = "2 servings";
+        List<RecipeDTO> recipeDTOs =
+                given()
+                        .when()
+                        .header("Authorization", userToken)
+                        .get(BASE_URL + "/recipes/servings/" + servings)
+                        .then()
+                        .statusCode(200)
+                        .log().all()
+                        .extract()
+                        .as(new TypeRef<List<RecipeDTO>>()
+                        {
+                        });
+
+        assertThat(recipeDTOs.size(), is(1));
+        assertThat(recipeDTOs.get(0).getServings(), is(servings));
     }
 
     @Test
     void create()
     {
-    }
+        RecipeDTO newRecipe = new RecipeDTO("Garlic Super Chicken", "4 servings", "Cook chicken with garlic.");
 
+
+        List<IngredientDTO> ingredients = ingredientDAO.readAll();
+        RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredients.get(0), "250g");
+        RecipeIngredientDTO garlicIngredient = new RecipeIngredientDTO(ingredients.get(3), "2 cloves");
+
+        newRecipe.setRecipeIngredients(Set.of(chickenIngredient, garlicIngredient));
+
+        RecipeDTO createdRecipe =
+                given()
+                        .contentType("application/json")
+                        .header("Authorization", adminToken)
+                        .body(newRecipe)
+                        .when()
+                        .post(BASE_URL + "/recipes")
+                        .then()
+                        .log().all()
+                        .statusCode(201)
+                        .extract()
+                        .as(RecipeDTO.class);
+
+
+        assertThat(createdRecipe.getRecipeName(), is(newRecipe.getRecipeName()));
+        assertThat(createdRecipe.getServings(), is(newRecipe.getServings()));
+        assertThat(createdRecipe.getInstructions(), is(newRecipe.getInstructions()));
     @Test
     void update() {
         RecipeDTO chickenRice = recipeDao.readByName("Chicken and rice").get(0);
@@ -187,5 +255,21 @@ class RecipeControllerTest {
     @Test
     void delete()
     {
+
+        RecipeDTO chickenRice = recipeDao.readByName("Chicken and Rice").get(0);
+
+
+        given()
+                .header("Authorization", adminToken)
+                .when()
+                .delete(BASE_URL + "/recipes/" + chickenRice.getId())
+                .then()
+                .log().all()
+                .statusCode(204);
+
+        List<RecipeDTO> remainingRecipes = recipeDao.readAll();
+        assertThat(remainingRecipes.size(), is(1));
+        assertThat(remainingRecipes.get(0).getRecipeName(), not(chickenRice.getRecipeName()));
     }
+
 }
