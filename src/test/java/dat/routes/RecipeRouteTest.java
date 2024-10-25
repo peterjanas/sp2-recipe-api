@@ -101,7 +101,7 @@ class RecipeRouteTest
     @Test
     void testAddNewRecipe()
     {
-        RecipeDTO newRecipe = new RecipeDTO("Garlic chicken", "4 servings", "Cook chicken with garlic.");
+        RecipeDTO newRecipe = new RecipeDTO("Garlic Super Chicken", "4 servings", "Cook chicken with garlic.");
 
         RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredientDAO.read(1), "250g");
         RecipeIngredientDTO garlicIngredient = new RecipeIngredientDTO(ingredientDAO.read(4), "2 cloves");
@@ -140,22 +140,24 @@ class RecipeRouteTest
         chickenRice.setInstructions("Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste.");
 
         IngredientDTO chickenIngredient = ingredientDAO.readByName("Chicken").get(0);
+        IngredientDTO riceIngredient = ingredientDAO.readByName("Rice").get(0);
         IngredientDTO onionIngredient = ingredientDAO.readByName("Onion").get(0);
         assertNotNull(chickenIngredient, "Chicken ingredient should not be null");
         assertNotNull(onionIngredient, "Onion ingredient should not be null");
 
 
-        RecipeIngredientDTO chickenRecipeIngredient = new RecipeIngredientDTO(chickenIngredient, "300g");
+        RecipeIngredientDTO chickenRecipeIngredient = new RecipeIngredientDTO(chickenIngredient, "200g");
+        RecipeIngredientDTO riceRecipeIngredient = new RecipeIngredientDTO(riceIngredient, "150g");
         RecipeIngredientDTO onionRecipeIngredient = new RecipeIngredientDTO(onionIngredient, "100g");
 
-        chickenRice.setRecipeIngredients(Set.of(chickenRecipeIngredient, onionRecipeIngredient));
+        chickenRice.setRecipeIngredients(Set.of(chickenRecipeIngredient, riceRecipeIngredient, onionRecipeIngredient));
 
         Recipe updatedRecipe =
                 given()
                         .contentType("application/json")
                         .body(chickenRice)
                         .when()
-                        .put(BASE_URL + "/recipes/" + chickenRice.getId())
+                        .put(BASE_URL + "/recipes/1")
                         .then()
                         .log().all()
                         .statusCode(200)
@@ -167,9 +169,11 @@ class RecipeRouteTest
         assertThat(updatedRecipe.getInstructions(), equalTo("Heat oil in a pan, sauté onions until translucent, add chicken and cook until golden brown, season to taste."));
     }
 
-/*
     @Test
     void shouldDeleteRecipeSuccessfully() {
+
+        RecipeDTO chickenRice = recipeDao.read(1);
+
         given()
                 .when()
                 .delete(BASE_URL + "/recipes/" + chickenRice.getId())
@@ -177,18 +181,7 @@ class RecipeRouteTest
                 .log().all()
                 .statusCode(204);
 
-        Recipe[] recipeDTOS =
-                given()
-                        .when()
-                        .get(BASE_URL + "/recipes")
-                        .then()
-                        .log().all()
-                        .statusCode(200)
-                        .extract()
-                        .as(Recipe[].class);
-
-        assertThat(recipeDTOS.length, is(1));
-        assertThat(recipeDTOS[0], equalTo(garlicChicken));
+        assertThat(recipeDao.readAll().size(), is(1));
     }
-*/
+
 }
