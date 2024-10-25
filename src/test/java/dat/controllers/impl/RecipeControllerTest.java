@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HotelControllerTest {
+class RecipeControllerTest {
 
     private final static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private final static SecurityController securityController = SecurityController.getInstance();
@@ -34,7 +34,7 @@ class HotelControllerTest {
         HibernateConfig.setTest(true);
 
         // Start api
-        app = ApplicationConfig.startServer(7070);
+        app = ApplicationConfig.startServer(7007);
     }
 
     @BeforeEach
