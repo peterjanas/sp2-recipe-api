@@ -12,7 +12,7 @@ POST {{url}}/recipes
 Content-Type: application/json
 
 {
-  "recipeName": "Garlic Chicken",
+  "recipeName": "Garlic Super Chicken",
   "servings": "4 servings",
   "instructions": "Cook chicken with garlic.",
   "recipeIngredients": [
