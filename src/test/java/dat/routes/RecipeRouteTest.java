@@ -15,6 +15,7 @@ import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
@@ -80,7 +81,7 @@ class RecipeRouteTest
     void testReturnRecipeWhenIdIsValid()
     {
         // Retrieve the expected recipe from the database
-        RecipeDTO expectedRecipe = recipeDao.read(1);  // Get the recipe with ID 1 from the DAO
+        RecipeDTO expectedRecipe = recipeDao.readByName("Chicken and rice").get(0);  // Get the recipe with ID 1 from the DAO
 
         // Fetch the recipe from the API using the recipe ID
         Recipe recipeDTO =
@@ -103,8 +104,9 @@ class RecipeRouteTest
     {
         RecipeDTO newRecipe = new RecipeDTO("Garlic Super Chicken", "4 servings", "Cook chicken with garlic.");
 
-        RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredientDAO.read(1), "250g");
-        RecipeIngredientDTO garlicIngredient = new RecipeIngredientDTO(ingredientDAO.read(4), "2 cloves");
+        List<IngredientDTO> ingredients = ingredientDAO.readAll();
+        RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredients.get(0), "250g");
+        RecipeIngredientDTO garlicIngredient = new RecipeIngredientDTO(ingredients.get(3), "2 cloves");
 
         newRecipe.setRecipeIngredients(Set.of(chickenIngredient, garlicIngredient));
 
@@ -130,8 +132,8 @@ class RecipeRouteTest
 
 
     @Test
-    void UpdateRecipe() {
-        RecipeDTO chickenRice = recipeDao.read(1);
+    void testUpdateRecipe() {
+        RecipeDTO chickenRice = recipeDao.readByName("Chicken and rice").get(0);
         assertNotNull(chickenRice, "Recipe should not be null");
 
 
@@ -157,7 +159,7 @@ class RecipeRouteTest
                         .contentType("application/json")
                         .body(chickenRice)
                         .when()
-                        .put(BASE_URL + "/recipes/1")
+                        .put(BASE_URL + "/recipes/" + chickenRice.getId())
                         .then()
                         .log().all()
                         .statusCode(200)
@@ -170,9 +172,9 @@ class RecipeRouteTest
     }
 
     @Test
-    void shouldDeleteRecipeSuccessfully() {
+    void testDeleteRecipe() {
 
-        RecipeDTO chickenRice = recipeDao.read(1);
+        RecipeDTO chickenRice = recipeDao.readByName("Chicken and rice").get(0);
 
         given()
                 .when()
