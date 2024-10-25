@@ -33,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.Matchers.not;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RecipeControllerTest {
+class RecipeControllerTest
+{
 
     private final static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private final static SecurityController securityController = SecurityController.getInstance();
@@ -87,8 +88,10 @@ class RecipeControllerTest {
         {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM User").executeUpdate();
+            em.createQuery("DELETE FROM Role").executeUpdate();
             em.createQuery("DELETE FROM RecipeIngredient").executeUpdate();
             em.createQuery("DELETE FROM Recipe").executeUpdate();
+            em.createQuery("DELETE FROM Ingredient").executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e)
         {
@@ -172,7 +175,6 @@ class RecipeControllerTest {
     {
         RecipeDTO newRecipe = new RecipeDTO("Garlic Super Chicken", "4 servings", "Cook chicken with garlic.");
 
-
         List<IngredientDTO> ingredients = ingredientDAO.readAll();
         RecipeIngredientDTO chickenIngredient = new RecipeIngredientDTO(ingredients.get(0), "250g");
         RecipeIngredientDTO garlicIngredient = new RecipeIngredientDTO(ingredients.get(3), "2 cloves");
@@ -196,8 +198,12 @@ class RecipeControllerTest {
         assertThat(createdRecipe.getRecipeName(), is(newRecipe.getRecipeName()));
         assertThat(createdRecipe.getServings(), is(newRecipe.getServings()));
         assertThat(createdRecipe.getInstructions(), is(newRecipe.getInstructions()));
+
+    }
+
     @Test
-    void update() {
+    void update()
+    {
         RecipeDTO chickenRice = recipeDao.readByName("Chicken and rice").get(0);
         assertNotNull(chickenRice, "Recipe should not be null");
 
@@ -221,16 +227,16 @@ class RecipeControllerTest {
 
         Recipe updatedRecipe =
                 given()
-                .header("Authorization", adminToken)
-                .contentType("application/json")
-                .body(chickenRice)
-                .when()
-                .put(BASE_URL + "/recipes/" + chickenRice.getId())
-                .then()
-                .statusCode(200)
-                .log().all()
-                .extract()
-                .as(Recipe.class);
+                        .header("Authorization", adminToken)
+                        .contentType("application/json")
+                        .body(chickenRice)
+                        .when()
+                        .put(BASE_URL + "/recipes/" + chickenRice.getId())
+                        .then()
+                        .statusCode(200)
+                        .log().all()
+                        .extract()
+                        .as(Recipe.class);
 
         // Assert that the update was successful
         assertThat(updatedRecipe.getRecipeName(), equalTo("Chicken and Onion Stir-Fry"));
@@ -251,13 +257,10 @@ class RecipeControllerTest {
     }
 
 
-
     @Test
     void delete()
     {
-
         RecipeDTO chickenRice = recipeDao.readByName("Chicken and Rice").get(0);
-
 
         given()
                 .header("Authorization", adminToken)
@@ -271,5 +274,4 @@ class RecipeControllerTest {
         assertThat(remainingRecipes.size(), is(1));
         assertThat(remainingRecipes.get(0).getRecipeName(), not(chickenRice.getRecipeName()));
     }
-
 }
