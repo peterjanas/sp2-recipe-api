@@ -90,7 +90,7 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
     }
 
     @Override
-    public void delete(Integer integer)
+    public boolean delete(Integer integer)
     {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
@@ -100,6 +100,7 @@ public class IngredientDAO implements IDAO<IngredientDTO, Integer>
             }
             em.getTransaction().commit();
         }
+        return false;
     }
 
     public List<IngredientDTO> readByName(String name) {

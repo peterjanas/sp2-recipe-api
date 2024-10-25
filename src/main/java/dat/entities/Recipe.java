@@ -27,7 +27,7 @@ public class Recipe
     private String recipeName;
 
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
 
 
