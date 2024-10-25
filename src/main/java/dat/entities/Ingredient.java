@@ -27,7 +27,7 @@ public class Ingredient
     private String ingredientName;
 
     // New relationship to RecipeIngredient
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ingredient")
     private Set<RecipeIngredient> recipeIngredients;
 
 

@@ -125,15 +125,6 @@ class RecipeDAOTest
     @Test
     void delete()
     {
-        RecipeDTO recipetbddeleted = recipeDAO.read(1);
-        recipeDAO.delete(recipetbddeleted.getId());
-        List<RecipeDTO> recipeDTOS = recipeDAO.readAll();
-        assertEquals(1, recipeDTOS.size());
-    }
-
-    @Test
-    void delete2()
-    {
         List<RecipeDTO> recipeDTOS = recipeDAO.readAll();
         RecipeDTO recipetbddeleted = recipeDTOS.get(1);
         recipeDAO.delete(recipetbddeleted.getId());
