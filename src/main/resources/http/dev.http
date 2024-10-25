@@ -77,4 +77,4 @@ Content-Type: application/json
 ### Slet chicken
 DELETE {{url}}/ingredients/1
 
-### mangler to delete nederst, put på linje linje 41 og get på linje 6
+### mangler recipe delete, og post recipe

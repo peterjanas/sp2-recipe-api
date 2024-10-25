@@ -139,29 +139,29 @@ public class RecipeDAO implements IDAO<RecipeDTO, Integer>
     }
 
     @Override
-    public void delete(Integer integer) {
+    public boolean delete(Integer integer) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-
             Recipe recipe = em.find(Recipe.class, integer);
             if (recipe != null) {
-                Set<RecipeIngredient> recipeIngredients = recipe.getRecipeIngredients();
-
-                for (RecipeIngredient ri : recipeIngredients) {
+                // Remove associated RecipeIngredients
+                for (RecipeIngredient ri : recipe.getRecipeIngredients()) {
                     em.remove(ri);
                 }
-
                 em.remove(recipe);
-                // This will cascade the removal to RecipeIngredient due to CascadeType.ALL and orphanRemoval = true
+                em.getTransaction().commit();
+                return true;
+            } else {
+                em.getTransaction().rollback();
+                return false;
             }
-
-            em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();  // Rollback in case of any errors
+                em.getTransaction().rollback();
             }
-            throw e;
+            e.printStackTrace();
+            return false;
         } finally {
             em.close();
         }
