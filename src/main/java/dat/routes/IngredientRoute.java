@@ -2,6 +2,7 @@ package dat.routes;
 
 
 import dat.controllers.impl.IngredientController;
+import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -13,10 +14,10 @@ public class IngredientRoute {
     {
         return () ->
         {
-            get("/findrecipefromingredient/{ingredientName}", ingredientController::getRecipesByIngredientName);
-            post("/", ingredientController::create);
-            put("/{id}", ingredientController::update);
-            delete("/{id}", ingredientController::delete);
+            get("/findrecipefromingredient/{ingredientName}", ingredientController::getRecipesByIngredientName, Role.USER);
+            post("/", ingredientController::create, Role.ADMIN);
+            put("/{id}", ingredientController::update, Role.ADMIN);
+            delete("/{id}", ingredientController::delete, Role.ADMIN);
         };
     }
 }
