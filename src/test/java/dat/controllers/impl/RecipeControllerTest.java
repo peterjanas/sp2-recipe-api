@@ -89,9 +89,7 @@ class RecipeControllerTest {
 
     @Test
     void readAll() {
-        System.out.println("usertoken: " + userToken);
-        System.out.println("admintoken: " + adminToken);
-        List<RecipeDTO> reicpeDTO =
+        List<RecipeDTO> recipeDTO =
                 given()
                         .when()
                         .header("Authorization", userToken)
@@ -103,19 +101,45 @@ class RecipeControllerTest {
                         .extract()
                         .as(new TypeRef<List<RecipeDTO>>() {});
 
-        assertThat(reicpeDTO.size(), is(2));
-        assertThat(reicpeDTO.get(0).getRecipeName(), is("Chicken and Rice"));
-        assertThat(reicpeDTO.get(1).getRecipeName(), is("Garlic Chicken"));
+        assertThat(recipeDTO.size(), is(2));
+        assertThat(recipeDTO.get(0).getRecipeName(), is("Chicken and Rice"));
+        assertThat(recipeDTO.get(1).getRecipeName(), is("Garlic Chicken"));
     }
 
     @Test
-    void readByName()
-    {
+    void readByName() {
+        String recipeName = "Garlic Chicken";
+        List<RecipeDTO> recipeDTOs =
+                given()
+                        .when()
+                        .header("Authorization", userToken)
+                        .get(BASE_URL + "/recipes/name/" + recipeName)
+                        .then()
+                        .statusCode(200)
+                        .log().all()
+                        .extract()
+                        .as(new TypeRef<List<RecipeDTO>>() {});
+
+        assertThat(recipeDTOs.size(), is(1));
+        assertThat(recipeDTOs.get(0).getRecipeName(), is(recipeName));
     }
 
     @Test
-    void readByServings()
-    {
+    void readByServings() {
+        String servings = "2 servings";
+        List<RecipeDTO> recipeDTOs =
+                given()
+                        .when()
+                        .header("Authorization", userToken)
+                        .get(BASE_URL + "/recipes/servings/" + servings)
+                        .then()
+                        .statusCode(200)
+                        .log().all()
+                        .extract()
+                        .as(new TypeRef<List<RecipeDTO>>() {});
+
+        assertThat(recipeDTOs.size(), is(1));
+        assertThat(recipeDTOs.get(0).getServings(), is(servings));
     }
 
    @Test
