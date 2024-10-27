@@ -73,7 +73,6 @@ public class RecipeController implements IController<RecipeDTO, Integer>
         // response
         ctx.res().setStatus(201);
         ctx.json(recipeDTO, RecipeDTO.class);
-
     }
 
     @Override
@@ -86,7 +85,6 @@ public class RecipeController implements IController<RecipeDTO, Integer>
         // response
         ctx.res().setStatus(200);
         ctx.json(recipeDTO, RecipeDTO.class);
-
     }
 
     @Override
@@ -97,7 +95,6 @@ public class RecipeController implements IController<RecipeDTO, Integer>
         dao.delete(id);
         // response
         ctx.res().setStatus(204);
-
     }
 
     @Override

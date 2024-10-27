@@ -42,7 +42,8 @@ public class IngredientController implements IController<IngredientDTO, Integer>
         ctx.json(ingredientDTOS, IngredientDTO.class);
     }
 
-    public void getRecipesByIngredientName(Context ctx) {
+    public void getRecipesByIngredientName(Context ctx)
+    {
         // request
         String ingredientName = ctx.pathParam("ingredientName");
         // List of DTOS
@@ -54,7 +55,8 @@ public class IngredientController implements IController<IngredientDTO, Integer>
 
     @Override
     // IngredientController.java
-    public void create(Context ctx) {
+    public void create(Context ctx)
+    {
         // request
         IngredientDTO jsonRequest = ctx.bodyAsClass(IngredientDTO.class);
         // Ensure id is null before persisting

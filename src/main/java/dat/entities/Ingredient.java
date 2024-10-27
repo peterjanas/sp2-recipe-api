@@ -26,11 +26,8 @@ public class Ingredient
     @Column(name = "ingredient_name", nullable = false, unique = true)
     private String ingredientName;
 
-    // New relationship to RecipeIngredient
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.REMOVE)
     private Set<RecipeIngredient> recipeIngredients;
-
-
 
     public Ingredient(String ingredientName) {
         this.ingredientName = ingredientName;

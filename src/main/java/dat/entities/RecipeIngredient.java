@@ -14,7 +14,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "recipe_ingredient")
-public class RecipeIngredient {
+public class RecipeIngredient
+{
 
     @Id
     @Setter(AccessLevel.NONE)
@@ -34,14 +35,16 @@ public class RecipeIngredient {
     private String amount;
 
 
-    public RecipeIngredient(Recipe recipe, Ingredient ingredient, String amount) {
+    public RecipeIngredient(Recipe recipe, Ingredient ingredient, String amount)
+    {
         this.recipe = recipe;
         this.ingredient = ingredient;
         this.amount = amount;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecipeIngredient that = (RecipeIngredient) o;
@@ -51,7 +54,8 @@ public class RecipeIngredient {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(recipe, ingredient, amount);
     }
 }

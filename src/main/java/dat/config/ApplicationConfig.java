@@ -14,7 +14,8 @@ import io.javalin.http.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ApplicationConfig {
+public class ApplicationConfig
+{
 
     private static Routes routes = new Routes();
     private static ObjectMapper jsonMapper = new Utils().getObjectMapper();
@@ -22,7 +23,8 @@ public class ApplicationConfig {
     private static AccessController accessController = new AccessController();
     private static Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
-    public static void configuration(JavalinConfig config) {
+    public static void configuration(JavalinConfig config)
+    {
         config.showJavalinBanner = false;
         config.bundledPlugins.enableRouteOverview("/routes", Role.ANYONE);
         config.router.contextPath = "/api"; // base path for all endpoints
@@ -31,7 +33,8 @@ public class ApplicationConfig {
         config.router.apiBuilder(SecurityRoutes.getSecurityRoutes());
     }
 
-    public static Javalin startServer(int port) {
+    public static Javalin startServer(int port)
+    {
         Javalin app = Javalin.create(ApplicationConfig::configuration);
 
         app.beforeMatched(accessController::accessHandler);
@@ -44,16 +47,19 @@ public class ApplicationConfig {
         return app;
     }
 
-    public static void stopServer(Javalin app) {
+    public static void stopServer(Javalin app)
+    {
         app.stop();
     }
 
-    private static void generalExceptionHandler(Exception e, Context ctx) {
+    private static void generalExceptionHandler(Exception e, Context ctx)
+    {
         logger.error("An unhandled exception occurred", e.getMessage());
         ctx.json(Utils.convertToJsonMessage(ctx, "error", e.getMessage()));
     }
 
-    public static void apiExceptionHandler(ApiException e, Context ctx) {
+    public static void apiExceptionHandler(ApiException e, Context ctx)
+    {
         ctx.status(e.getCode());
         logger.warn("An API exception occurred: Code: {}, Message: {}", e.getCode(), e.getMessage());
         ctx.json(Utils.convertToJsonMessage(ctx, "warning", e.getMessage()));

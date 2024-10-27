@@ -22,17 +22,13 @@ public class Recipe
     @Column(name = "recipe_id", nullable = false, unique = true)
     private int id;
 
-
     @Column(name = "recipe_name", nullable = false, unique = true)
     private String recipeName;
-
 
     @OneToMany(mappedBy = "recipe", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<RecipeIngredient> recipeIngredients;
 
-
     private String servings;
-
 
     private String instructions;
 
