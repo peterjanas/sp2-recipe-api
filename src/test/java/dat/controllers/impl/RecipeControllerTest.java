@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.not;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class RecipeControllerTest
 {
-    private final static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
+    private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private final static SecurityController securityController = SecurityController.getInstance();
     private final static SecurityDAO securityDAO = new SecurityDAO(emf);
     private static RecipeDAO recipeDao = RecipeDAO.getInstance(emf);
@@ -50,11 +50,16 @@ class RecipeControllerTest
     @BeforeAll
     static void setUpAll()
     {
+        if (emf == null || !emf.isOpen()) {
+            emf = HibernateConfig.getEntityManagerFactoryForTest();
+        }
         HibernateConfig.setTest(true);
 
         // Start api
         app = ApplicationConfig.startServer(7007);
     }
+
+
 
     @BeforeEach
     void setUp()
