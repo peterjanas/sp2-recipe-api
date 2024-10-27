@@ -3,6 +3,9 @@ package dat.config;
 import dat.entities.Ingredient;
 import dat.entities.Recipe;
 import dat.entities.RecipeIngredient;
+import dat.security.entities.Role;
+import dat.security.entities.User;
+import dk.bugelhartmann.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.jetbrains.annotations.NotNull;
@@ -12,15 +15,7 @@ import java.util.Set;
 public class Populate
 {
 
-    private EntityManagerFactory emf;
-
-    public Populate(EntityManagerFactory emf)
-    {
-        this.emf = emf;
-    }
-
-
-    public void populateData()
+    public static void populateData(EntityManagerFactory emf)
     {
         try (var em = emf.createEntityManager())
         {
@@ -77,7 +72,7 @@ public class Populate
         return Set.of(chickenIngredient, garlicIngredient);
     }
 
-    public void cleanupData()
+    public void cleanupData(EntityManagerFactory emf)
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -94,5 +89,30 @@ public class Populate
 
             em.getTransaction().commit();
         }
+    }
+    public static UserDTO[] populateUsers(EntityManagerFactory emf)
+    {
+        User user, admin;
+        Role userRole, adminRole;
+
+        user = new User("usertest", "user123");
+        admin = new User("admintest", "admin123");
+        userRole = new Role("USER");
+        adminRole = new Role("ADMIN");
+        user.addRole(userRole);
+        admin.addRole(adminRole);
+
+        try (var em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.persist(userRole);
+            em.persist(adminRole);
+            em.persist(user);
+            em.persist(admin);
+            em.getTransaction().commit();
+        }
+        UserDTO userDTO = new UserDTO(user.getUsername(), "user123");
+        UserDTO adminDTO = new UserDTO(admin.getUsername(), "admin123");
+        return new UserDTO[]{userDTO, adminDTO};
     }
 }

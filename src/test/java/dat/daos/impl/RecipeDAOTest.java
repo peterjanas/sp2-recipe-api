@@ -29,19 +29,19 @@ class RecipeDAOTest
         emf = HibernateConfig.getEntityManagerFactoryForTest();
         recipeDAO = RecipeDAO.getInstance(emf);
         ingredientDAO = IngredientDAO.getInstance(emf);
-        populate = new Populate(emf);
+        populate = new Populate();
     }
 
     @BeforeEach
     void setUp()
     {
-        populate.populateData();
+        populate.populateData(emf);
     }
 
     @AfterEach
     void tearDown()
     {
-        populate.cleanupData();
+        populate.cleanupData(emf);
     }
 
     @AfterAll

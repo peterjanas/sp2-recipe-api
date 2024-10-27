@@ -15,11 +15,12 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
+    private static EntityManagerFactory emf;
     public static void main(String[] args) {
-        //Populate.main(args);
-        //EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        emf = HibernateConfig.getEntityManagerFactory();
         //Populate populate = new Populate(emf);
-        //populate.populateData();
+        Populate.populateUsers(emf);
+        Populate.populateData(emf);
         ApplicationConfig.startServer(7007);
     }
 
