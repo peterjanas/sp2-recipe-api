@@ -23,7 +23,8 @@ jobs:
           DEPLOYED: ${{ secrets.DEPLOYED }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           ISSUER: ${{ secrets.ISSUER }}
-          TOKEN_EXPIRE_TIME: ${{ secrets.TOKEN_EXPIRE_TIME }}
+          TOKEN_EXPIRE_TIME: ${{ secrets.TOKEN_EXPIRE_TIME }}'
+          DB_NAME: ${{ secrets.DB_NAME }}
         run: mvn --batch-mode clean package
 
       - name: Login to Docker Hub
