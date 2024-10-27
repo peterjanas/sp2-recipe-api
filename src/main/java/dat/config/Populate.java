@@ -72,7 +72,7 @@ public class Populate
         return Set.of(chickenIngredient, garlicIngredient);
     }
 
-    public void cleanupData(EntityManagerFactory emf)
+    public static void cleanupData(EntityManagerFactory emf)
     {
         try (EntityManager em = emf.createEntityManager())
         {

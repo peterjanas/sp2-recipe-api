@@ -35,8 +35,6 @@ import static org.hamcrest.Matchers.not;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class RecipeControllerTest
 {
-
-
     private final static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private final static SecurityController securityController = SecurityController.getInstance();
     private final static SecurityDAO securityDAO = new SecurityDAO(emf);
@@ -50,7 +48,7 @@ class RecipeControllerTest
     private static final String BASE_URL = "http://localhost:7007/api";
 
     @BeforeAll
-    void setUpAll()
+    static void setUpAll()
     {
         HibernateConfig.setTest(true);
 
@@ -101,7 +99,7 @@ class RecipeControllerTest
     }
 
     @AfterAll
-    void tearDownAll()
+    static void tearDownAll()
     {
         ApplicationConfig.stopServer(app);
     }

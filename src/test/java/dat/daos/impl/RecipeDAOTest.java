@@ -19,8 +19,6 @@ class RecipeDAOTest
     private static RecipeDAO recipeDAO;
     private static IngredientDAO ingredientDAO;
     private static EntityManagerFactory emf;
-    private static Populate populate;
-
     private static List<RecipeDTO> recipes;
 
     @BeforeAll
@@ -30,19 +28,18 @@ class RecipeDAOTest
         emf = HibernateConfig.getEntityManagerFactoryForTest();
         recipeDAO = RecipeDAO.getInstance(emf);
         ingredientDAO = IngredientDAO.getInstance(emf);
-        populate = new Populate();
     }
 
     @BeforeEach
     void setUp()
     {
-        populate.populateData(emf);
+        Populate.populateData(emf);
     }
 
     @AfterEach
     void tearDown()
     {
-        populate.cleanupData(emf);
+        Populate.cleanupData(emf);
     }
 
     @AfterAll
@@ -122,7 +119,6 @@ class RecipeDAOTest
     }
 
 
-
     @Test
     void delete()
     {
@@ -132,7 +128,6 @@ class RecipeDAOTest
         List<RecipeDTO> recipeDTOSCheck = recipeDAO.readAll();
         assertEquals(1, recipeDTOSCheck.size());
     }
-
 
 
     @Test
