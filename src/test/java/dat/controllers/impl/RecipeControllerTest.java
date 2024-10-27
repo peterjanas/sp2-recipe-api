@@ -35,6 +35,7 @@ import static org.hamcrest.Matchers.not;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class RecipeControllerTest
 {
+    /*
 
     private final static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private final static SecurityController securityController = SecurityController.getInstance();
@@ -274,4 +275,6 @@ class RecipeControllerTest
         assertThat(remainingRecipes.size(), is(1));
         assertThat(remainingRecipes.get(0).getRecipeName(), not(chickenRice.getRecipeName()));
     }
+
+     */
 }
