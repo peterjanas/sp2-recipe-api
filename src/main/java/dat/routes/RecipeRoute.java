@@ -14,10 +14,10 @@ public class RecipeRoute
 
         return () ->
         {
-                get("/", recipeController::readAll, Role.USER);
-                get("/{id}", recipeController::read, Role.USER);
-                get("/name/{name}", recipeController::readByName, Role.USER);
-                get("/servings/{servings}", recipeController::readByServings, Role.USER);
+                get("/", recipeController::readAll, Role.ANYONE);
+                get("/{id}", recipeController::read, Role.ANYONE);
+                get("/name/{name}", recipeController::readByName, Role.ANYONE);
+                get("/servings/{servings}", recipeController::readByServings, Role.ANYONE);
 
                 post("/", recipeController::create, Role.ADMIN);
                 put("/{id}", recipeController::update, Role.ADMIN);
