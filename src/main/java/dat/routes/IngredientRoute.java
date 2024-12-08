@@ -14,6 +14,8 @@ public class IngredientRoute {
     {
         return () ->
         {
+            get("/", ingredientController::readAll, Role.ANYONE);
+            get("/{id}", ingredientController::read, Role.ANYONE);
             get("/findrecipefromingredient/{ingredientName}", ingredientController::getRecipesByIngredientName, Role.ANYONE);
             post("/", ingredientController::create, Role.ADMIN);
             put("/{id}", ingredientController::update, Role.ADMIN);
